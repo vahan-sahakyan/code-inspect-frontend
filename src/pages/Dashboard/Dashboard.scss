@@ -1,0 +1,16 @@
+.dashboard {
+  .assignment-row {
+    height: 100%;
+    cursor: pointer;
+    a {
+      display: block;
+      padding: 1rem;
+      pre {
+        color: black;
+      }
+    }
+    &:hover {
+      background-color: #0001;
+    }
+  }
+}
