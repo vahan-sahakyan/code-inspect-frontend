@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Button, Container } from 'react-bootstrap';
+import { Badge, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import ApiService from '../../services/apiService';
 import instance from '../../services/axios';
@@ -36,27 +36,42 @@ const AssignmentView = () => {
     setAssignment(prev => ({ ...prev, [prop]: value } as Assignment));
   }
   return (
-    <Container className='d-flex justify-content-center align-items-center flex-column'>
-      <div style={{ width: '350px' }} className='my-5 d-flex flex-column gap-2'>
-        <h3>Assignment {assignmentId}</h3>
-        <h6 style={{ color: '#646cff' }}>Status: {assignment?.status.toUpperCase()}</h6>
-        <h6>
-          <span style={{ display: 'inline-block', minWidth: '8rem' }}>Github URL:</span>
-          <input
-            type='url'
-            value={assignment?.githubUrl ?? ''}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => updateAssignment('githubUrl', e.target.value)}
-          />
-        </h6>
-        <h6>
-          <span style={{ display: 'inline-block', minWidth: '8rem' }}>Branch:</span>
-          <input
-            type='text'
-            value={assignment?.branch ?? ''}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => updateAssignment('branch', e.target.value)}
-          />
-        </h6>
-        <Button variant='outline-secondary' style={{ padding: '.5rem 0' }} onClick={() => save()}>
+    <Container className='my-5'>
+      <header className='d-flex flex-row justify-content-start gap-4 align-items-center flex-wrap '>
+        <h2>Assignment&nbsp;#{assignmentId}</h2>
+        <Badge pill bg='info' style={{ fontSize: '1rem' }}>
+          {assignment?.status.toUpperCase()}
+        </Badge>
+      </header>
+      <div>
+        <Form.Group as={Row} className='my-3' controlId='formPlaintextEmail'>
+          <Form.Label column sm='3' md='2'>
+            GitHub&nbsp;URL:
+          </Form.Label>
+          <Col sm='9' md='8' lg='6'>
+            <Form.Control
+              type='url'
+              value={assignment?.githubUrl ?? ''}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => updateAssignment('githubUrl', e.target.value)}
+              placeholder='https://github.com/username/repo-name'
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className='my-3' controlId='formPlaintextEmail'>
+          <Form.Label column sm='3' md='2'>
+            Branch:
+          </Form.Label>
+          <Col sm='9' md='8' lg='6'>
+            <Form.Control
+              type='text'
+              value={assignment?.branch ?? ''}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => updateAssignment('branch', e.target.value)}
+              placeholder='example-branch-name'
+            />
+          </Col>
+        </Form.Group>
+
+        <Button variant='secondary' onClick={() => save()}>
           Submit Assignment
         </Button>
       </div>
