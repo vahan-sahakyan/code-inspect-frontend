@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-import instance from '../../services/axios';
-import useLocalState from '../../utils/useLocalStorage';
+import { instance } from '../../services';
+import { useLocalState } from '../../utils';
 
-export const PrivateRoute = ({ children }: { children: JSX.Element }) => {
+const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const [jwt, setJwt] = useLocalState<string>('', 'jwt');
   const isValid = useRef(false);
   const navigate = useNavigate();
@@ -35,3 +35,4 @@ export const PrivateRoute = ({ children }: { children: JSX.Element }) => {
 
   return isValid ? children : <Navigate to='/login' />;
 };
+export default PrivateRoute;

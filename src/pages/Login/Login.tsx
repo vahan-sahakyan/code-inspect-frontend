@@ -3,8 +3,8 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-import instance from '../../services/axios';
-import useLocalState from '../../utils/useLocalStorage';
+import { instance } from '../../services';
+import { useLocalState } from '../../utils';
 const { Group, Control } = Form;
 
 export type User = {

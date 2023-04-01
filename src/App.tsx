@@ -3,11 +3,8 @@ import './App.scss';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { PrivateRoute } from './hoc/PrivateRoute/PrivateRoute';
-import AssignmentView from './pages/AssignmentView/AssignmentView';
-import Dashboard from './pages/Dashboard/Dashboard';
-import Homepage from './pages/Homepage/Homepage';
-import Login from './pages/Login/Login';
+import { PrivateRoute } from './hoc';
+import { AssignmentView, Dashboard, Homepage, Login } from './pages';
 
 const App: React.FC = () => {
   return (

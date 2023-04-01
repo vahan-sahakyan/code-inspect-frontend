@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-import ApiService from '../../services/apiService';
+import { ApiService } from '../../services';
 
 export type Assignment = {
   id: number;

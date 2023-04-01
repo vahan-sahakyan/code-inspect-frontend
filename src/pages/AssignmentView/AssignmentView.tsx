@@ -3,7 +3,7 @@ import { Badge, Button, ButtonGroup, Col, Container, DropdownButton, Form, Row }
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import { useParams } from 'react-router-dom';
 
-import ApiService from '../../services/apiService';
+import { ApiService } from '../../services';
 import { Assignment } from '../Dashboard/Dashboard';
 
 const AssignmentView = () => {
