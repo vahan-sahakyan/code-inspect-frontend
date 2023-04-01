@@ -1,6 +1,6 @@
 import './App.scss';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { PrivateRoute } from './hoc/PrivateRoute/PrivateRoute';

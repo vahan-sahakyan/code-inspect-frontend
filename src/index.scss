@@ -25,20 +25,11 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 
-* {
-  border-radius: unset;
-}
-* {
-  //   border-radius: 20px;
-}
 /* HTML5 display-role reset for older browsers */
 // prettier-ignore
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
 	display: block;
-}
-body {
-  line-height: 1.2;
 }
 ol,
 ul {
@@ -68,6 +59,7 @@ table {
   font-size: 16px;
 }
 * {
+  border-radius: unset;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -75,6 +67,7 @@ table {
 }
 body {
   font-family: sans, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.2;
 }
 button {
   cursor: pointer;

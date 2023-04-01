@@ -21,7 +21,7 @@ const Login = () => {
     password,
   };
   const [jwt, setJwt] = useLocalState<string>('', 'jwt');
-  const [loginResponse, setLoginResponse] = useLocalState<AxiosResponse<User> | AxiosError>(
+  const [, setLoginResponse] = useLocalState<AxiosResponse<User> | AxiosError>(
     {} as AxiosResponse<User>,
     'loginResponse'
   );
@@ -29,7 +29,7 @@ const Login = () => {
   useEffect(() => {
     if (jwt) navigate(`/dashboard`);
     console.log(`JWT: ${jwt}`);
-  }, [jwt]);
+  }, [jwt, navigate]);
 
   async function sendLoginRequest(e: FormEvent) {
     e.preventDefault();
