@@ -33,7 +33,7 @@ const Login = () => {
 
   async function sendLoginRequest(e: FormEvent) {
     e.preventDefault();
-    if (!!jwt) return;
+    if (jwt) return;
     try {
       const response = await instance.post('api/auth/login', user);
       setLoginResponse(response);

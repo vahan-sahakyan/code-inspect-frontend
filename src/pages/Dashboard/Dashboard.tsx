@@ -1,19 +1,20 @@
-import { AxiosError, AxiosResponse } from 'axios';
-import React, { CSSProperties, useEffect, useState } from 'react';
-import { Button, Card } from 'react-bootstrap';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import ApiService from '../../services/apiService';
-import instance from '../../services/axios';
-import useLocalState from '../../utils/useLocalStorage';
 import './Dashboard.scss';
 
+import { AxiosError } from 'axios';
+import { useEffect, useState } from 'react';
+import { Button, Card } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+
+import ApiService from '../../services/apiService';
+import useLocalState from '../../utils/useLocalStorage';
+
 export type Assignment = {
+  id: number;
+  number?: number;
+  status: string;
+  githubUrl?: string;
   branch?: string;
   codeReviewVideoUrl?: string;
-  githubUrl?: string;
-  name?: string;
-  id: number;
-  status: string;
 };
 
 const Dashboard = () => {
@@ -25,8 +26,8 @@ const Dashboard = () => {
   }, []);
   async function fetchAssignments() {
     const res = await ApiService.getAssignments();
-
-    setAssignments(res.reverse());
+    res.reverse();
+    setAssignments(res);
   }
 
   async function createAssignment() {
@@ -46,7 +47,7 @@ const Dashboard = () => {
           size='lg'
           variant='secondary'
           className='text-6'
-          style={{ margin: '1rem' }}
+          style={{ margin: '2rem' }}
           onClick={() => createAssignment()}
         >
           Submit New Assignment
@@ -54,7 +55,7 @@ const Dashboard = () => {
       </div>
       <div
         //
-        className='dashboard d-grid gap-4 m-5 justify-content-around align-content-center'
+        className='dashboard d-grid gap-4 m-5 mt-0 justify-content-around align-content-center'
         style={{ gridTemplateColumns: 'repeat(auto-fill, 18rem)' }}
       >
         {assignments &&
@@ -67,11 +68,11 @@ const Dashboard = () => {
                   <Card.Text>
                     <p>
                       <strong>GitHub URL:</strong>
-                      {item.githubUrl}
+                      {item.githubUrl || ' N/A'}
                     </p>
                     <p>
                       <strong>Branch:</strong>
-                      {item.branch}
+                      {item.branch || ' N/A'}
                     </p>
                   </Card.Text>
                   <Button variant='secondary' onClick={() => navigate(`/assignments/${item.id}`)}>

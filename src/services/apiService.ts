@@ -26,7 +26,8 @@ abstract class ApiService {
       const response = await instance.get(`/api/assignments/${id}`, {
         headers: { Authorization: `Bearer ${ApiService.getJwt()}` },
       });
-      return response.data;
+      console.log(response);
+      return response.data.assignment;
     } catch (error) {
       //
     }

@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
-/// 
+// prettier-ignore
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -17,35 +17,46 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
+	border: 0;
 	margin: 0;
 	padding: 0;
-	border: 0;
 	// font-size: 100%;
 	// font: inherit;
 	vertical-align: baseline;
 }
+
+* {
+  border-radius: unset;
+}
+* {
+  //   border-radius: 20px;
+}
 /* HTML5 display-role reset for older browsers */
+// prettier-ignore
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
-	line-height: 1.2;
+  line-height: 1.2;
 }
-ol, ul {
-	list-style: none;
+ol,
+ul {
+  list-style: none;
 }
-blockquote, q {
-	quotes: none;
+blockquote,
+q {
+  quotes: none;
 }
+// prettier-ignore
 blockquote:before, blockquote:after,
 q:before, q:after {
 	content: '';
 	content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
@@ -57,10 +68,10 @@ table {
   font-size: 16px;
 }
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
   text-decoration: none !important;
-  box-sizing: border-box;
 }
 body {
   font-family: sans, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -69,8 +80,8 @@ button {
   cursor: pointer;
 }
 a {
-  font-weight: 500;
   color: #646cff;
+  font-weight: 500;
 }
 a:hover {
   color: #535bf2;

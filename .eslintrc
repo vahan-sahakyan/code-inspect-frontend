@@ -45,7 +45,6 @@
     "sonarjs/no-identical-functions": "off",
     "sonarjs/cognitive-complexity": "off",
     "react/display-name": "off",
-    "prettier/prettier": ["error", {}, { "usePrettierrc": true }],
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
@@ -71,8 +70,15 @@
         "aspects": ["invalidHref", "preferButton"]
       }
     ],
-    "quotes": ["error", "single", { "allowTemplateLiterals": true }],
-    "jsx-quotes": ["error", "prefer-double"],
+    "quotes": "off",
+    "jsx-quotes": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,
+        "jsxSingleQuote": true
+      }
+    ],
     "formatjs/enforce-id": [
       "warn",
       {

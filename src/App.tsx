@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
 import './App.scss';
+
+import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+
+import { PrivateRoute } from './hoc/PrivateRoute/PrivateRoute';
+import AssignmentView from './pages/AssignmentView/AssignmentView';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Homepage from './pages/Homepage/Homepage';
 import Login from './pages/Login/Login';
-import { PrivateRoute } from './hoc/PrivateRoute/PrivateRoute';
-import AssignmentView from './pages/AssignmentView/AssignmentView';
 
 const App: React.FC = () => {
   return (
