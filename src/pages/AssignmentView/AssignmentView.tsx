@@ -4,14 +4,12 @@ import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import { useParams } from 'react-router-dom';
 
 import ApiService from '../../services/apiService';
-import useLocalState from '../../utils/useLocalStorage';
 import { Assignment } from '../Dashboard/Dashboard';
 
 const AssignmentView = () => {
   const params = useParams();
   const { assignmentId } = params;
 
-  const [jwt, setJwt] = useLocalState('', 'jwt');
   const [assignment, setAssignment] = useState<Assignment | null>(null);
   const [dropdownValue, setDropdownValue] = useState<number>(1);
 

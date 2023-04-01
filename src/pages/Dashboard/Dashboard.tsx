@@ -6,7 +6,6 @@ import { Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import ApiService from '../../services/apiService';
-import useLocalState from '../../utils/useLocalStorage';
 
 export type Assignment = {
   id: number;
@@ -19,7 +18,6 @@ export type Assignment = {
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [jwt, setJwt] = useLocalState<string>('', 'jwt');
   const [assignments, setAssignments] = useState<Assignment[]>();
   useEffect(() => {
     fetchAssignments();
@@ -66,14 +64,14 @@ const Dashboard = () => {
                   <Card.Title>Assignment #{item.id}</Card.Title>
                   <Card.Subtitle className='mb-2 text-muted'>{item.status}</Card.Subtitle>
                   <Card.Text>
-                    <p>
-                      <strong>GitHub URL:</strong>
-                      {item.githubUrl || ' N/A'}
-                    </p>
-                    <p>
-                      <strong>Branch:</strong>
-                      {item.branch || ' N/A'}
-                    </p>
+                    <span style={{ display: 'block' }}>
+                      <strong>GitHubURL:&nbsp;</strong>
+                      {item.githubUrl || ' --'}
+                    </span>
+                    <span style={{ display: 'block' }}>
+                      <strong>Branch:&nbsp;</strong>
+                      {item.branch || ' --'}
+                    </span>
                   </Card.Text>
                   <Button variant='secondary' onClick={() => navigate(`/assignments/${item.id}`)}>
                     Edit
