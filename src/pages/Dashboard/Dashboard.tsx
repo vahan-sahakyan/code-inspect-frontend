@@ -3,14 +3,15 @@ import './Dashboard.scss';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { ApiService } from '../../services';
+import { AssignmentStatusValues } from '../../services/apiService';
 
 export type Assignment = {
   id: number;
   number?: number;
-  status: string;
+  status: AssignmentStatusValues;
   githubUrl?: string;
   branch?: string;
   codeReviewVideoUrl?: string;
@@ -40,12 +41,35 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className='text-center'>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '2rem',
+          marginLeft: '3rem',
+        }}
+      >
+        <div
+          style={{
+            //
+            fontSize: 16,
+            display: 'block',
+            cursor: 'pointer',
+          }}
+        >
+          <Link to={'/'}>
+            <h2>🔙</h2>
+          </Link>
+        </div>
         <Button
           size='lg'
           variant='secondary'
-          className='text-6'
-          style={{ margin: '2rem' }}
+          style={{
+            //
+            fontSize: 16,
+            margin: '2rem 0',
+            display: 'block',
+          }}
           onClick={() => createAssignment()}
         >
           Submit New Assignment
@@ -53,7 +77,7 @@ const Dashboard = () => {
       </div>
       <div
         //
-        className='dashboard d-grid gap-4 m-5 mt-0 justify-content-around align-content-center'
+        className='dashboard d-grid gap-4 m-5 mt-0 justify-content-start align-content-center'
         style={{ gridTemplateColumns: 'repeat(auto-fill, 18rem)' }}
       >
         {assignments &&

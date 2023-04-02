@@ -1,4 +1,25 @@
+import { AxiosError, AxiosResponse } from 'axios';
+
+import { Assignment } from '../pages/Dashboard/Dashboard';
 import instance from './axios';
+
+export type AssignmentStatusValues = 'Pending Submission' | 'Submitted' | 'In Review' | 'Needs Update' | 'Completed';
+
+export type AssignmentEnum = {
+  assignmentName: string;
+  assignmentNum: number;
+};
+
+export type AssignmentStatusEnum = {
+  status: AssignmentStatusValues;
+  step: number;
+};
+
+export type GetAssingmentResponse = {
+  assignment: Assignment;
+  assignmentEnum: AssignmentEnum[];
+  assignmentStatusEnum: AssignmentStatusEnum[];
+};
 
 abstract class ApiService {
   static getJwt = () => JSON.parse(localStorage.getItem('jwt') || '');
@@ -21,15 +42,15 @@ abstract class ApiService {
     }
   };
 
-  static getAssignment = async (id: number | string) => {
+  static getAssignment = async (id: number | string): Promise<GetAssingmentResponse | AxiosError> => {
     try {
-      const response = await instance.get(`/api/assignments/${id}`, {
+      const response: AxiosResponse<GetAssingmentResponse> = await instance.get(`/api/assignments/${id}`, {
         headers: { Authorization: `Bearer ${ApiService.getJwt()}` },
       });
-      console.log(response);
-      return response.data.assignment;
+
+      return response.data;
     } catch (error) {
-      //
+      throw error as Error;
     }
   };
 

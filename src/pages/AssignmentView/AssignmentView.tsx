@@ -1,28 +1,65 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect } from 'react';
 import { Badge, Button, ButtonGroup, Col, Container, DropdownButton, Form, Row } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import { useParams } from 'react-router-dom';
 
+import { useAssignment } from '../../hooks';
 import { ApiService } from '../../services';
+import { GetAssingmentResponse } from '../../services/apiService';
 import { Assignment } from '../Dashboard/Dashboard';
+
+function isGetAssingmentResponse(res: unknown): res is GetAssingmentResponse {
+  return (
+    !!res && typeof res === 'object' && Object.keys(res).some(key => ['assignment', 'assignmentEnum'].includes(key))
+  );
+}
 
 const AssignmentView = () => {
   const params = useParams();
   const { assignmentId } = params;
 
-  const [assignment, setAssignment] = useState<Assignment | null>(null);
-  const [dropdownValue, setDropdownValue] = useState<number>(1);
+  const {
+    assignment,
+    setAssignment,
+    assignmentEnum,
+    setAssignmentEnum,
+    assignmentStatusEnum,
+    setAssignmentStatusEnum,
+    selectedAssignment,
+    setSelectedAssignment,
+  } = useAssignment();
 
-  async function fetchAssignment(id: string | number) {
-    const res = await ApiService.getAssignment(id);
-    console.log(res);
-    setAssignment(res);
-  }
+  const fetchAssignment = useCallback(
+    async function (id: string | number) {
+      try {
+        const res = await ApiService.getAssignment(id);
+
+        if (isGetAssingmentResponse(res)) {
+          setAssignment(res.assignment);
+          setAssignmentEnum(res.assignmentEnum);
+          setAssignmentStatusEnum(res.assignmentStatusEnum);
+        }
+      } catch (error) {
+        console.warn(error);
+        setAssignment(undefined);
+        setAssignmentEnum(undefined);
+      }
+    },
+    [setAssignment, setAssignmentEnum, setAssignmentStatusEnum]
+  );
 
   async function save() {
+    let status = assignment?.status;
+    if (
+      assignmentStatusEnum &&
+      (!assignment?.status || assignment?.status === assignmentStatusEnum[0].status)
+      //
+    ) {
+      status = assignmentStatusEnum[1].status;
+    }
     try {
       if (!assignmentId) return;
-      const response = await ApiService.saveAssignment(assignmentId, assignment);
+      const response = await ApiService.saveAssignment(assignmentId, { ...assignment, status });
 
       setAssignment(response);
     } catch (error) {
@@ -32,17 +69,21 @@ const AssignmentView = () => {
 
   useEffect(() => {
     assignmentId && fetchAssignment(assignmentId);
-  }, [assignmentId]);
+  }, [assignmentId, fetchAssignment]);
 
-  function updateAssignment(prop: string, value: string) {
+  function updateAssignment(prop: keyof Assignment, value: string) {
     setAssignment(prev => ({ ...prev, [prop]: value } as Assignment));
   }
   return (
     <Container className='my-5'>
       <header className='d-flex flex-row justify-content-start gap-4 align-items-center flex-wrap '>
-        <h2>Assignment&nbsp;#{assignmentId}</h2>
+        {selectedAssignment || assignment?.number ? (
+          <h2>Assignment {selectedAssignment || assignment?.number}</h2>
+        ) : (
+          <></>
+        )}
         <Badge pill bg='info' style={{ fontSize: '1rem' }}>
-          {assignment?.status.toUpperCase()}
+          {assignment?.status?.toUpperCase()}
         </Badge>
       </header>
 
@@ -51,19 +92,28 @@ const AssignmentView = () => {
           Assignment Number:
         </Form.Label>
         <Col sm='9' md='8' lg='6'>
-          <DropdownButton variant='secondary' as={ButtonGroup} title={`Assignment ${dropdownValue}`}>
-            {[1, 2, 3, 4, 5, 6].map(n => (
+          <DropdownButton
+            variant='secondary'
+            as={ButtonGroup}
+            title={
+              selectedAssignment || assignment?.number
+                ? `Assignment ${selectedAssignment || assignment?.number}`
+                : 'Select an Assignment'
+            }
+            onSelect={(eventKey: string | null) => {
+              if (!eventKey) return;
+              setSelectedAssignment(eventKey);
+              updateAssignment('number', eventKey);
+            }}
+          >
+            {assignmentEnum?.map(({ assignmentName, assignmentNum }) => (
               <DropdownItem
-                key={n}
-                onClick={(e: ChangeEvent<any>) => {
-                  const number = +e.target.textContent.match(/\d+/)[0];
-                  setDropdownValue(number);
-                }}
-                eventKey={n}
-                active={n === dropdownValue}
+                key={assignmentNum}
+                eventKey={assignmentNum}
+                active={!!selectedAssignment && assignmentNum === +selectedAssignment}
                 variant='secondary'
               >
-                Assignment {n}
+                {assignmentName}
               </DropdownItem>
             ))}
           </DropdownButton>

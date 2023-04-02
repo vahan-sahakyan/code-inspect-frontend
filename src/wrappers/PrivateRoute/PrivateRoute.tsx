@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
+import { useLocalState } from '../../hooks';
 import { instance } from '../../services';
-import { useLocalState } from '../../utils';
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const [jwt, setJwt] = useLocalState<string>('', 'jwt');

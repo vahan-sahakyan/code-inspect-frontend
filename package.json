@@ -5,9 +5,9 @@
   "type": "module",
   "proxy": "http://localhost:8080/",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc && vite build",
-    "preview": "vite preview",
+    "preview": "vite preview --host",
     "tsc": "tsc -p . --noEmit",
     "lint": "eslint --fix . && stylelint --fix \"src/**/*.(css|scss)\"",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",

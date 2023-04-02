@@ -3,8 +3,8 @@ import './App.scss';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { PrivateRoute } from './hoc';
 import { AssignmentView, Dashboard, Homepage, Login } from './pages';
+import { PrivateRoute } from './wrappers';
 
 const App: React.FC = () => {
   return (
