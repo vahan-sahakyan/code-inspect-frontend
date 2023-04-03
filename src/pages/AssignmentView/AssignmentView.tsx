@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect } from 'react';
+import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
 import { Badge, Button, ButtonGroup, Col, Container, DropdownButton, Form, Row } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import { useParams } from 'react-router-dom';
@@ -47,33 +47,55 @@ const AssignmentView = () => {
     },
     [setAssignment, setAssignmentEnum, setAssignmentStatusEnum]
   );
+  const updateAssignment = useCallback(
+    function (prop: keyof Assignment, value: string) {
+      setAssignment(prev => ({ ...prev, [prop]: value } as Assignment));
+    },
+    [setAssignment]
+  );
 
-  async function save() {
-    let status = assignment?.status;
-    if (
-      assignmentStatusEnum &&
-      (!assignment?.status || assignment?.status === assignmentStatusEnum[0].status)
-      //
-    ) {
-      status = assignmentStatusEnum[1].status;
-    }
-    try {
-      if (!assignmentId) return;
-      const response = await ApiService.saveAssignment(assignmentId, { ...assignment, status });
+  const persist = useCallback(
+    async function () {
+      try {
+        if (!assignmentId) return;
+        const response = await ApiService.saveAssignment(assignmentId, assignment);
 
-      setAssignment(response);
-    } catch (error) {
-      //
-    }
-  }
+        setAssignment(response);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [assignment, assignmentId, setAssignment]
+  );
+
+  const save = useCallback(
+    async function () {
+      if (
+        assignmentStatusEnum &&
+        (!assignment?.status || assignment?.status === assignmentStatusEnum[0].status)
+        //
+      ) {
+        updateAssignment('status', assignmentStatusEnum[1].status);
+      } else {
+        persist();
+      }
+    },
+    [assignment?.status, assignmentStatusEnum, persist, updateAssignment]
+  );
 
   useEffect(() => {
     assignmentId && fetchAssignment(assignmentId);
   }, [assignmentId, fetchAssignment]);
 
-  function updateAssignment(prop: keyof Assignment, value: string) {
-    setAssignment(prev => ({ ...prev, [prop]: value } as Assignment));
-  }
+  const prevAssignment = useRef(assignment);
+
+  useEffect(() => {
+    if (assignment?.status !== prevAssignment.current?.status) {
+      persist();
+    }
+    prevAssignment.current = assignment;
+  }, [assignment, persist]);
+
   return (
     <Container className='my-5'>
       <header className='d-flex flex-row justify-content-start gap-4 align-items-center flex-wrap '>

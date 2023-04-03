@@ -38,7 +38,7 @@ abstract class ApiService {
       });
       return data;
     } catch (error) {
-      //
+      throw error as Error;
     }
   };
 
@@ -62,7 +62,7 @@ abstract class ApiService {
 
       return response?.data;
     } catch (error) {
-      //
+      throw error as Error;
     }
   };
   ////////
