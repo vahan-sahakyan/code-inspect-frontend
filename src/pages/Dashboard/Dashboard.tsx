@@ -2,7 +2,7 @@ import './Dashboard.scss';
 
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import { Badge, Button, Card } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { ApiService } from '../../services';
@@ -41,40 +41,52 @@ const Dashboard = () => {
 
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '2rem',
-          marginLeft: '3rem',
-        }}
-      >
+      <header className='mx-5 d-flex align-items-center justify-content-between'>
         <div
           style={{
-            //
-            fontSize: 16,
-            display: 'block',
-            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '2rem',
           }}
         >
-          <Link to={'/'}>
-            <h2>🔙</h2>
-          </Link>
+          <div
+            style={{
+              //
+              fontSize: 16,
+              display: 'block',
+              cursor: 'pointer',
+            }}
+          >
+            <Link to={'/'}>
+              <h2>🔙</h2>
+            </Link>
+          </div>
+          <Button
+            size='lg'
+            variant='secondary'
+            style={{
+              //
+              fontSize: 16,
+              margin: '2rem 0',
+              display: 'block',
+            }}
+            onClick={() => createAssignment()}
+          >
+            Submit New Assignment
+          </Button>
         </div>
         <Button
-          size='lg'
-          variant='secondary'
-          style={{
-            //
-            fontSize: 16,
-            margin: '2rem 0',
-            display: 'block',
+          variant='link'
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            navigate('/login');
+            localStorage.clear();
           }}
-          onClick={() => createAssignment()}
+          className='text-muted'
         >
-          Submit New Assignment
+          Logout
         </Button>
-      </div>
+      </header>
       <div
         //
         className='dashboard d-grid gap-4 m-5 mt-0 justify-content-start align-content-center'
@@ -85,8 +97,10 @@ const Dashboard = () => {
             <div key={item.id}>
               <Card style={{ width: '18rem', minHeight: '15rem' }}>
                 <Card.Body className='d-flex flex-column justify-content-around'>
-                  <Card.Title>Assignment #{item.id}</Card.Title>
-                  <Card.Subtitle className='mb-2 text-muted'>{item.status}</Card.Subtitle>
+                  <Card.Title>Assignment #{item.number}</Card.Title>
+                  <Badge pill bg='info' className='mb-2 align-self-start'>
+                    {item.status}
+                  </Badge>
                   <Card.Text>
                     <span style={{ display: 'block' }}>
                       <strong>GitHubURL:&nbsp;</strong>

@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
 import { Badge, Button, ButtonGroup, Col, Container, DropdownButton, Form, Row } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAssignment } from '../../hooks';
 import { ApiService } from '../../services';
@@ -16,6 +16,7 @@ function isGetAssingmentResponse(res: unknown): res is GetAssingmentResponse {
 
 const AssignmentView = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const { assignmentId } = params;
 
   const {
@@ -169,8 +170,11 @@ const AssignmentView = () => {
           </Col>
         </Form.Group>
 
-        <Button variant='secondary' onClick={() => save()}>
+        <Button variant='secondary' className='me-3' onClick={() => save()}>
           Submit Assignment
+        </Button>
+        <Button variant='outline-secondary' className='px-4' onClick={() => navigate('/dashboard')}>
+          Back
         </Button>
       </div>
     </Container>
