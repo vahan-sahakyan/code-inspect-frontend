@@ -1,0 +1,20 @@
+.code-reviewer-dashboard {
+  .assignment-row {
+    cursor: pointer;
+    height: 100%;
+    a {
+      display: block;
+      padding: 1rem;
+      pre {
+        color: black;
+      }
+    }
+    &:hover {
+      background-color: #0001;
+    }
+  }
+
+  .assignment-wrapper {
+    border: 1px solid lightgray;
+  }
+}

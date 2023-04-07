@@ -64,6 +64,7 @@ const Dashboard = () => {
           <Button
             size='lg'
             variant='secondary'
+            className='rounded-0'
             style={{
               //
               fontSize: 16,
@@ -89,16 +90,16 @@ const Dashboard = () => {
       </header>
       <div
         //
-        className='dashboard d-grid gap-4 m-5 mt-0 justify-content-start align-content-center'
+        className='dashboard d-grid gap-4 m-4  justify-content-center align-content-center'
         style={{ gridTemplateColumns: 'repeat(auto-fill, 18rem)' }}
       >
         {assignments &&
           assignments.map(item => (
             <div key={item.id}>
-              <Card style={{ width: '18rem', minHeight: '15rem' }}>
+              <Card style={{ width: '18rem', minHeight: '15rem', borderRadius: 0 }}>
                 <Card.Body className='d-flex flex-column justify-content-around'>
                   <Card.Title>Assignment #{item.number}</Card.Title>
-                  <Badge pill bg='info' className='mb-2 align-self-start'>
+                  <Badge bg='info' className='mb-2 align-self-start rounded-0'>
                     {item.status}
                   </Badge>
                   <Card.Text>
@@ -111,7 +112,7 @@ const Dashboard = () => {
                       {item.branch || ' --'}
                     </span>
                   </Card.Text>
-                  <Button variant='secondary' onClick={() => navigate(`/assignments/${item.id}`)}>
+                  <Button variant='secondary' className='rounded-0' onClick={() => navigate(`/assignments/${item.id}`)}>
                     Edit
                   </Button>
                 </Card.Body>

@@ -1,3 +1,5 @@
+import './AssignmentView.scss';
+
 import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
 import { Badge, Button, ButtonGroup, Col, Container, DropdownButton, Form, Row } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
@@ -98,7 +100,7 @@ const AssignmentView = () => {
   }, [assignment, persist]);
 
   return (
-    <Container className='my-5'>
+    <Container className='my-5 assignment-view'>
       <header className='d-flex flex-row justify-content-start gap-4 align-items-center flex-wrap '>
         {selectedAssignment || assignment?.number ? (
           <h2>Assignment {selectedAssignment || assignment?.number}</h2>
@@ -128,12 +130,16 @@ const AssignmentView = () => {
               setSelectedAssignment(eventKey);
               updateAssignment('number', eventKey);
             }}
+            style={{ borderRadius: 0 }}
+            className='rounded-0'
           >
             {assignmentEnum?.map(({ assignmentName, assignmentNum }) => (
               <DropdownItem
                 key={assignmentNum}
                 eventKey={assignmentNum}
-                active={!!selectedAssignment && assignmentNum === +selectedAssignment}
+                active={
+                  selectedAssignment ? assignmentNum === +selectedAssignment : assignmentNum === assignment?.number
+                }
                 variant='secondary'
               >
                 {assignmentName}
@@ -143,7 +149,7 @@ const AssignmentView = () => {
         </Col>
       </Form.Group>
       <div>
-        <Form.Group as={Row} className='my-3' controlId='formPlaintextEmail'>
+        <Form.Group as={Row} className='my-3' controlId='formPlaintextGitHubUrl'>
           <Form.Label column sm='3' md='2'>
             GitHub&nbsp;URL:
           </Form.Label>
@@ -153,10 +159,11 @@ const AssignmentView = () => {
               value={assignment?.githubUrl ?? ''}
               onChange={(e: ChangeEvent<HTMLInputElement>) => updateAssignment('githubUrl', e.target.value)}
               placeholder='https://github.com/username/repo-name'
+              className='rounded-0'
             />
           </Col>
         </Form.Group>
-        <Form.Group as={Row} className='my-3' controlId='formPlaintextEmail'>
+        <Form.Group as={Row} className='my-3' controlId='formPlaintextBranch'>
           <Form.Label column sm='3' md='2'>
             Branch:
           </Form.Label>
@@ -166,16 +173,20 @@ const AssignmentView = () => {
               value={assignment?.branch ?? ''}
               onChange={(e: ChangeEvent<HTMLInputElement>) => updateAssignment('branch', e.target.value)}
               placeholder='example-branch-name'
+              className='rounded-0'
             />
           </Col>
         </Form.Group>
-
-        <Button variant='secondary' className='me-3' onClick={() => save()}>
-          Submit Assignment
-        </Button>
-        <Button variant='outline-secondary' className='px-4' onClick={() => navigate('/dashboard')}>
-          Back
-        </Button>
+        <Col sm='12' md='10' lg='8' className='pe-lg-2 pe-md-1 pe-sm-0'>
+          <Container className='m-0 p-0 d-flex justify-content-end'>
+            <Button variant='outline-secondary' className='px-3 me-3 rounded-0' onClick={() => navigate('/dashboard')}>
+              Go Back
+            </Button>
+            <Button variant='secondary' className='px-4 rounded-0' onClick={() => save()}>
+              Submit Assignment
+            </Button>
+          </Container>
+        </Col>
       </div>
     </Container>
   );

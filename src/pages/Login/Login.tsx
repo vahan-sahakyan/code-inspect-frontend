@@ -14,8 +14,8 @@ export type User = {
 
 const Login = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [username, setUsername] = useState<string>();
+  const [password, setPassword] = useState<string>();
   const user: User = {
     username,
     password,
@@ -52,6 +52,7 @@ const Login = () => {
             type='text'
             placeholder='Email or Username'
             onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+            className='rounded-0'
           />
         </Group>
         <Group className='my-3 d-flex align-items-center gap-3' controlId='password'>
@@ -59,11 +60,12 @@ const Login = () => {
             type='password'
             placeholder='Password'
             onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            className='rounded-0'
           />
         </Group>
         <Button
           style={{ width: '400px' }}
-          className='my-3 button'
+          className='my-3 button rounded-0'
           variant='secondary'
           type='submit'
           onClick={sendLoginRequest}
@@ -72,7 +74,7 @@ const Login = () => {
         </Button>
         <Button
           style={{ width: '400px' }}
-          className='border-0'
+          className='rounded-0 btn-outline-secondary'
           variant='light'
           type='submit'
           onClick={() => navigate('/')}
