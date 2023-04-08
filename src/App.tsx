@@ -1,7 +1,7 @@
 import './App.scss';
 
 import jwtDecode from 'jwt-decode';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { useLocalState } from './hooks';
@@ -10,27 +10,16 @@ import CodeReviewerDashboard from './pages/CodeReviewerDashboard';
 import { PrivateRoute } from './wrappers';
 
 const roles = ['ROLE_STUDENT', 'ROLE_CODE_REVIEWER'] as const;
-type Role = (typeof roles)[number];
-type DecodedJwt = { exp: number; iat: number; sub: string; authorities: Array<Role> };
+export type Role = (typeof roles)[number];
+
+export type DecodedJwt = {
+  exp: number;
+  iat: number;
+  sub: string;
+  authorities: Array<Role>;
+};
 
 const App: React.FC = () => {
-  // const [jwt] = useLocalState('', 'jwt');
-
-  // const getRoleFromJwt = useCallback(
-  //   function () {
-  //     if (!jwt) return [];
-  //     const decodedJwt: DecodedJwt = jwtDecode(jwt);
-  //     return decodedJwt.authorities;
-  //   },
-  //   [jwt]
-  // );
-
-  // const [roles, setRoles] = useState<Role[]>(getRoleFromJwt());
-
-  // useEffect(() => {
-  //   setRoles(getRoleFromJwt());
-  //   console.log(roles);
-  // }, [getRoleFromJwt, jwt]);
   const [jwt] = useLocalState('', 'jwt');
 
   const [roles, setRoles] = useState<Role[]>();
@@ -38,7 +27,7 @@ const App: React.FC = () => {
   useEffect(() => {
     if (!jwt) return setRoles([]);
     setRoles((jwtDecode(jwt) as DecodedJwt).authorities);
-    console.log(roles);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jwt]);
 
   return (

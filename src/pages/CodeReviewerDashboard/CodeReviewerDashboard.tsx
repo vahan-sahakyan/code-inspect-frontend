@@ -1,12 +1,16 @@
 import './CodeReviewerDashboard.scss';
 
 import { AxiosError } from 'axios';
+import jwtDecode from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { Badge, Button, Card } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { DecodedJwt } from '../../App';
+import { useLocalState } from '../../hooks';
 import { ApiService } from '../../services';
 import { AssignmentStatusValues } from '../../services/apiService';
+import { User } from '../Login/Login';
 
 export type Assignment = {
   id: number;
@@ -15,29 +19,38 @@ export type Assignment = {
   githubUrl?: string;
   branch?: string;
   codeReviewVideoUrl?: string;
+  codeReviewer: User;
 };
 
 const CodeReviewerDashboard = () => {
   const navigate = useNavigate();
+  const [jwt] = useLocalState<string>('', 'jwt');
   const [assignments, setAssignments] = useState<Assignment[]>();
-  useEffect(() => {
-    fetchAssignments();
-  }, []);
+
+  async function claimAssignment(assignment: Assignment) {
+    const decodedJwt: DecodedJwt = jwtDecode(jwt);
+    assignment = {
+      ...assignment,
+      codeReviewer: {
+        username: decodedJwt.sub,
+      },
+      status: 'In Review',
+    };
+
+    const response = await ApiService.claimAssignment(assignment);
+
+    setAssignments(prev => prev?.filter(item => item.id !== response.id));
+  }
+
   async function fetchAssignments() {
     const res = await ApiService.getAssignments();
     res.reverse();
     setAssignments(res);
   }
 
-  async function createAssignment() {
-    try {
-      const assignment = await ApiService.createAssignment();
-      console.log(assignment);
-      navigate(`/assignments/${assignment.id}`);
-    } catch (error) {
-      console.error('🔴', (error as AxiosError).message);
-    }
-  }
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
 
   return (
     <div className='code-reviewer-dashboard '>
@@ -105,12 +118,8 @@ const CodeReviewerDashboard = () => {
                         {item.branch || ' --'}
                       </span>
                     </Card.Text>
-                    <Button
-                      variant='secondary'
-                      className='rounded-0'
-                      onClick={() => navigate(`/assignments/${item.id}`)}
-                    >
-                      Edit
+                    <Button variant='secondary' className='rounded-0' onClick={() => claimAssignment(item)}>
+                      Claim
                     </Button>
                   </Card.Body>
                 </Card>

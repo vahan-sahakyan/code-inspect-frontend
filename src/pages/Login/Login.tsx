@@ -8,8 +8,10 @@ import { instance } from '../../services';
 const { Group, Control } = Form;
 
 export type User = {
+  id?: number;
   username?: string;
   password?: string;
+  authorities?: string[];
 };
 
 const Login = () => {

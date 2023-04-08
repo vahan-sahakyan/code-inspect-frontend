@@ -65,6 +65,18 @@ abstract class ApiService {
       throw error as Error;
     }
   };
+
+  static claimAssignment = async (assignment: Assignment) => {
+    try {
+      const response = await instance.put(`/api/assignments/${assignment.id}`, assignment, {
+        headers: { Authorization: `Bearer ${ApiService.getJwt()}` },
+      });
+
+      return response?.data;
+    } catch (error) {
+      throw error as Error;
+    }
+  };
   ////////
   ////////
   ////////
