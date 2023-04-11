@@ -1,4 +1,4 @@
-import './AssignmentView.scss';
+import './AssignmentDetails.scss';
 
 import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
 import { Badge, Button, ButtonGroup, Col, Container, DropdownButton, Form, Row } from 'react-bootstrap';
@@ -16,7 +16,7 @@ function isGetAssingmentResponse(res: unknown): res is GetAssingmentResponse {
   );
 }
 
-const AssignmentView = () => {
+const AssignmentDetails = () => {
   const params = useParams();
   const navigate = useNavigate();
   const { assignmentId } = params;
@@ -100,7 +100,7 @@ const AssignmentView = () => {
   }, [assignment, persist]);
 
   return (
-    <Container className='my-5 assignment-view'>
+    <Container className='my-5 assignment-details'>
       <header className='d-flex flex-row justify-content-start gap-4 align-items-center flex-wrap '>
         {selectedAssignment || assignment?.number ? (
           <h2>Assignment {selectedAssignment || assignment?.number}</h2>
@@ -192,4 +192,4 @@ const AssignmentView = () => {
   );
 };
 
-export default AssignmentView;
+export default AssignmentDetails;

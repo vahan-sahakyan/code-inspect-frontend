@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { ApiService } from '../../services';
 import { AssignmentStatusValues } from '../../services/apiService';
+import { User } from '../Login/Login';
 
 export type Assignment = {
   id: number;
@@ -15,6 +16,7 @@ export type Assignment = {
   githubUrl?: string;
   branch?: string;
   codeReviewVideoUrl?: string;
+  codeReviewer: User;
 };
 
 const Dashboard = () => {

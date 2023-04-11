@@ -1,26 +1,16 @@
 import './CodeReviewerDashboard.scss';
 
-import { AxiosError } from 'axios';
 import jwtDecode from 'jwt-decode';
 import { useEffect, useState } from 'react';
-import { Badge, Button, Card } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { DecodedJwt } from '../../App';
+import { AssignmentRecord } from '../../components';
 import { useLocalState } from '../../hooks';
 import { ApiService } from '../../services';
-import { AssignmentStatusValues } from '../../services/apiService';
-import { User } from '../Login/Login';
-
-export type Assignment = {
-  id: number;
-  number?: number;
-  status: AssignmentStatusValues;
-  githubUrl?: string;
-  branch?: string;
-  codeReviewVideoUrl?: string;
-  codeReviewer: User;
-};
+import { Assignment } from '../Dashboard/Dashboard';
+import { styles } from './CodeReviewerDashboard.styles';
 
 const CodeReviewerDashboard = () => {
   const navigate = useNavigate();
@@ -39,13 +29,18 @@ const CodeReviewerDashboard = () => {
 
     const response = await ApiService.claimAssignment(assignment);
 
-    setAssignments(prev => prev?.filter(item => item.id !== response.id));
+    setAssignments(prev => prev?.map(item => (item.id === response.id ? response : item)));
   }
 
   async function fetchAssignments() {
     const res = await ApiService.getAssignments();
     res.reverse();
     setAssignments(res);
+  }
+
+  function handleLogout() {
+    navigate('/login');
+    localStorage.clear();
   }
 
   useEffect(() => {
@@ -55,79 +50,59 @@ const CodeReviewerDashboard = () => {
   return (
     <div className='code-reviewer-dashboard '>
       <header className='mx-5 d-flex align-items-center justify-content-between'>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '2rem',
-          }}
-        >
-          <div
-            style={{
-              //
-              fontSize: 16,
-              display: 'block',
-              cursor: 'pointer',
-              margin: '2rem 0',
-            }}
-          >
-            <Link to={'/'}>
-              <h2>🔙</h2>
-            </Link>
-          </div>
+        <div style={styles.goBack}>
+          <Link to={'/'}>
+            <h2>🔙</h2>
+          </Link>
         </div>
-        <Button
-          variant='link'
-          style={{ cursor: 'pointer' }}
-          onClick={() => {
-            navigate('/login');
-            localStorage.clear();
-          }}
-          className='text-muted'
-        >
+        <Button variant='link' style={{ cursor: 'pointer' }} onClick={handleLogout} className='text-muted'>
           Logout
         </Button>
       </header>
       <h2 className='w-75 m-auto m-5 my-0'>Code Reviewer Dashboard</h2>
-      {/* <div className='assignment-wrapper in-review'></div> */}
-      <div className='assignment-wrapper submitted mt-5 px-2 w-75 m-auto rounded-0'>
-        <div className='h5 text-muted px-3 bg-white' style={{ marginTop: '-.8rem', width: 'max-content' }}>
-          Awaiting Review
+      <div className='assignment-wrapper in-review mt-5 px-2 w-75 m-auto rounded-0'>
+        <div className='h5 text-muted px-3 bg-white' style={styles.wrapperTitle}>
+          In Review
         </div>
-        <div
-          //
-          className='d-grid gap-4 p-4 justify-content-center align-content-center'
-          style={{ gridTemplateColumns: 'repeat(auto-fill, 18rem)' }}
-        >
-          {assignments &&
-            assignments.map(item => (
-              <div key={item.id}>
-                <Card className='rounded-0' style={{ width: '18rem', minHeight: '15rem' }}>
-                  <Card.Body className='d-flex flex-column justify-content-around '>
-                    <Card.Title>Assignment #{item.number}</Card.Title>
-                    <Badge bg='info' className='rounded-0 mb-2 align-self-start'>
-                      {item.status}
-                    </Badge>
-                    <Card.Text>
-                      <span style={{ display: 'block' }}>
-                        <strong>GitHubURL:&nbsp;</strong>
-                        {item.githubUrl || ' --'}
-                      </span>
-                      <span style={{ display: 'block' }}>
-                        <strong>Branch:&nbsp;</strong>
-                        {item.branch || ' --'}
-                      </span>
-                    </Card.Text>
-                    <Button variant='secondary' className='rounded-0' onClick={() => claimAssignment(item)}>
-                      Claim
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </div>
-            ))}
+        <div className='d-grid gap-4 p-4 justify-content-center align-content-center' style={styles.assignmentsGrid}>
+          {assignments?.filter(a => a.status === 'In Review').length ? (
+            assignments
+              .filter(a => a.status === 'In Review')
+              .map(item => <AssignmentRecord key={item.id} assignment={item} claimAssignment={claimAssignment} />)
+          ) : (
+            <div>No Assignments Found</div>
+          )}
         </div>
       </div>
-      {/* <div className='assignment-wrapper needs-update'></div> */}
+      <div className='assignment-wrapper submitted mt-5 px-2 w-75 m-auto rounded-0'>
+        <div className='h5 text-muted px-3 bg-white' style={styles.wrapperTitle}>
+          Awaiting Review
+        </div>
+        <div className='d-grid gap-4 p-4 justify-content-center align-content-center' style={styles.assignmentsGrid}>
+          {assignments?.filter(a => a.status === 'Submitted').length ? (
+            assignments
+              .filter(a => a.status === 'Submitted')
+              .map(item => <AssignmentRecord key={item.id} assignment={item} claimAssignment={claimAssignment} />)
+          ) : (
+            <div>No Assignments Found</div>
+          )}
+        </div>
+      </div>
+      <div className='assignment-wrapper needs-update  mt-5 px-2 w-75 m-auto rounded-0'>
+        <div className='h5 text-muted px-3 bg-white' style={styles.wrapperTitle}>
+          Needs Update
+        </div>
+        <div className='d-grid gap-4 p-4 justify-content-center align-content-center' style={styles.assignmentsGrid}>
+          {assignments?.filter(a => a.status === 'Needs Update').length ? (
+            assignments
+              .filter(a => a.status === 'Needs Update')
+              .map(item => <AssignmentRecord key={item.id} assignment={item} claimAssignment={claimAssignment} />)
+          ) : (
+            <div>No Assignments Found</div>
+          )}
+        </div>
+      </div>
+      <div style={{ height: '10rem' }} />
     </div>
   );
 };

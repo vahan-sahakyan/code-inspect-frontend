@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { useLocalState } from './hooks';
-import { AssignmentView, Dashboard, Homepage, Login } from './pages';
+import { AssignmentDetails, Dashboard, Homepage, Login } from './pages';
 import CodeReviewerDashboard from './pages/CodeReviewerDashboard';
 import { PrivateRoute } from './wrappers';
 
@@ -50,7 +50,7 @@ const App: React.FC = () => {
         path='/assignments/:assignmentId'
         element={
           <PrivateRoute>
-            <AssignmentView />
+            <AssignmentDetails />
           </PrivateRoute>
         }
       />

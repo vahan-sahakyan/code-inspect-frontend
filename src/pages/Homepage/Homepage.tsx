@@ -5,7 +5,7 @@ const Homepage = () => {
   return (
     <div style={{ margin: '2rem', display: 'inline-block' }}>
       <Link to={'/dashboard'}>
-        <h3>Go to Dashboard</h3>
+        <h3>View Dashboard</h3>
       </Link>
     </div>
   );
