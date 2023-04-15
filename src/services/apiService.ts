@@ -83,13 +83,6 @@ abstract class ApiService {
       throw error as Error;
     }
   };
-  ////////
-  ////////
-  ////////
-  ////////
-  static __deletePhoto = async (id: number) => {
-    await instance.delete(`http://localhost:8080/photos/${id}`);
-  };
 }
 
 export default ApiService;

@@ -20,8 +20,6 @@ time, mark, audio, video {
 	border: 0;
 	margin: 0;
 	padding: 0;
-	// font-size: 100%;
-	// font: inherit;
 	vertical-align: baseline;
 }
 
@@ -62,16 +60,16 @@ table {
 * {
   border-radius: unset;
   box-sizing: border-box;
+  color: black;
   margin: 0;
   padding: 0;
-  color: black;
   text-decoration: none !important;
 }
 body {
-  font-family: 'Mabry Pro';
+  font-family: 'Mabry Pro', sans-serif;
+  font-style: normal;
   font-weight: 400;
   line-height: 1.2;
-  font-style: normal;
 }
 button {
   cursor: pointer;
@@ -96,7 +94,6 @@ a:hover {
   border-color: inherit;
   box-shadow: unset;
   box-shadow: 0 0 0 0.12rem rgba(182, 182, 182, 0.25);
-  border-color: #d0d0d0;
 }
 input {
   border: 1.4px solid #000000 !important;
