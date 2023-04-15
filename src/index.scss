@@ -54,6 +54,7 @@ table {
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
+@import '/fonts/stylesheet.css';
 
 :root {
   font-size: 16px;
@@ -63,11 +64,14 @@ table {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  color: black;
   text-decoration: none !important;
 }
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Mabry Pro';
+  font-weight: 400;
   line-height: 1.2;
+  font-style: normal;
 }
 button {
   cursor: pointer;
@@ -82,7 +86,7 @@ a:hover {
 .dropdown-menu.show {
   border-radius: 3px;
 }
-.btn-outline-secondary {
+.btn-outline-dark {
   &:hover {
     background: inherit !important;
     color: inherit !important;
@@ -93,4 +97,7 @@ a:hover {
   box-shadow: unset;
   box-shadow: 0 0 0 0.12rem rgba(182, 182, 182, 0.25);
   border-color: #d0d0d0;
+}
+input {
+  border: 1.4px solid #000000 !important;
 }

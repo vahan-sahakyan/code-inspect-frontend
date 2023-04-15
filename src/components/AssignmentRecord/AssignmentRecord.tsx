@@ -1,20 +1,24 @@
-import { Badge, Button, Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
+import useRoles from '../../hooks/useRoles';
 import { Assignment } from '../../pages/Dashboard/Dashboard';
+import { AssignmentStatusValues } from '../../services/apiService';
+import StatusBadge from '../StatusBadge/StatusBadge';
 
 type AssignmentRecordProps<T> = {
   assignment: T;
-  claimAssignment: (assignment: T) => Promise<void>;
+  claimAssignment?: (assignment: T) => Promise<void>;
 };
 export default function AssignmentRecord({ assignment, claimAssignment }: AssignmentRecordProps<Assignment>) {
+  const navigate = useNavigate();
+  const { isCodeReviewer } = useRoles();
   return (
     <div key={assignment.id}>
-      <Card className='rounded-0' style={{ width: '18rem', minHeight: '15rem' }}>
+      <Card className='rounded-0' style={{ width: '18rem', minHeight: '15rem', border: '2px solid black' }}>
         <Card.Body className='d-flex flex-column justify-content-around '>
           <Card.Title>Assignment #{assignment.number}</Card.Title>
-          <Badge bg='info' className='rounded-0 mb-2 align-self-start'>
-            {assignment.status}
-          </Badge>
+          <StatusBadge text={assignment.status} className='rounded-0 align-self-start' />
           <Card.Text>
             <span style={{ display: 'block' }}>
               <strong>GitHubURL:&nbsp;</strong>
@@ -25,9 +29,31 @@ export default function AssignmentRecord({ assignment, claimAssignment }: Assign
               {assignment.branch || ' --'}
             </span>
           </Card.Text>
-          <Button variant='secondary' className='rounded-0' onClick={() => claimAssignment(assignment)}>
-            Claim
-          </Button>
+          {isCodeReviewer ? (
+            <Button
+              variant='dark'
+              className='rounded-0'
+              onClick={() => {
+                if (assignment.status === 'In Review') {
+                  navigate(`/assignments/${assignment.id}`);
+                } else {
+                  claimAssignment?.(assignment);
+                }
+              }}
+            >
+              {(['In Review'] as AssignmentStatusValues[]).includes(assignment.status) ? 'Edit' : 'Claim'}
+            </Button>
+          ) : (
+            <Button
+              variant='dark'
+              className='rounded-0'
+              onClick={() => {
+                navigate(`/assignments/${assignment.id}`);
+              }}
+            >
+              {(['Completed'] as AssignmentStatusValues[]).includes(assignment.status) ? 'View Code Review' : 'Edit'}
+            </Button>
+          )}
         </Card.Body>
       </Card>
     </div>

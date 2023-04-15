@@ -42,6 +42,9 @@ const CodeReviewerDashboard = () => {
     navigate('/login');
     localStorage.clear();
   }
+  function handleGoBack() {
+    navigate('/');
+  }
 
   useEffect(() => {
     fetchAssignments();
@@ -51,17 +54,27 @@ const CodeReviewerDashboard = () => {
     <div className='code-reviewer-dashboard '>
       <header className='mx-5 d-flex align-items-center justify-content-between'>
         <div style={styles.goBack}>
-          <Link to={'/'}>
-            <h2>🔙</h2>
-          </Link>
+          <Button
+            variant='link'
+            style={{ cursor: 'pointer' }}
+            onClick={handleGoBack}
+            className='text-black text-decoration-underline'
+          >
+            ◂ Go Back
+          </Button>
         </div>
-        <Button variant='link' style={{ cursor: 'pointer' }} onClick={handleLogout} className='text-muted'>
+        <Button
+          variant='link'
+          style={{ cursor: 'pointer' }}
+          onClick={handleLogout}
+          className='text-black text-decoration-underline'
+        >
           Logout
         </Button>
       </header>
       <h2 className='w-75 m-auto m-5 my-0'>Code Reviewer Dashboard</h2>
       <div className='assignment-wrapper in-review mt-5 px-2 w-75 m-auto rounded-0'>
-        <div className='h5 text-muted px-3 bg-white' style={styles.wrapperTitle}>
+        <div className='h5 text-black px-3 bg-white' style={styles.wrapperTitle}>
           In Review
         </div>
         <div className='d-grid gap-4 p-4 justify-content-center align-content-center' style={styles.assignmentsGrid}>
@@ -75,13 +88,14 @@ const CodeReviewerDashboard = () => {
         </div>
       </div>
       <div className='assignment-wrapper submitted mt-5 px-2 w-75 m-auto rounded-0'>
-        <div className='h5 text-muted px-3 bg-white' style={styles.wrapperTitle}>
+        <div className='h5 text-black px-3 bg-white' style={styles.wrapperTitle}>
           Awaiting Review
         </div>
         <div className='d-grid gap-4 p-4 justify-content-center align-content-center' style={styles.assignmentsGrid}>
-          {assignments?.filter(a => a.status === 'Submitted').length ? (
+          {assignments?.filter(a => ['Submitted', 'Resubmitted'].includes(a.status)).length ? (
             assignments
-              .filter(a => a.status === 'Submitted')
+              .filter(a => ['Submitted', 'Resubmitted'].includes(a.status))
+              .sort((a, b) => (a.status === 'Resubmitted' ? -1 : 1))
               .map(item => <AssignmentRecord key={item.id} assignment={item} claimAssignment={claimAssignment} />)
           ) : (
             <div>No Assignments Found</div>
@@ -89,7 +103,7 @@ const CodeReviewerDashboard = () => {
         </div>
       </div>
       <div className='assignment-wrapper needs-update  mt-5 px-2 w-75 m-auto rounded-0'>
-        <div className='h5 text-muted px-3 bg-white' style={styles.wrapperTitle}>
+        <div className='h5 text-black px-3 bg-white' style={styles.wrapperTitle}>
           Needs Update
         </div>
         <div className='d-grid gap-4 p-4 justify-content-center align-content-center' style={styles.assignmentsGrid}>

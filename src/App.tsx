@@ -1,11 +1,11 @@
 import './App.scss';
 
-import jwtDecode from 'jwt-decode';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { useLocalState } from './hooks';
-import { AssignmentDetails, Dashboard, Homepage, Login } from './pages';
+import useRoles from './hooks/useRoles';
+import { AssignmentView, Dashboard, Homepage, Login } from './pages';
+import CodeReviewAssignmentView from './pages/CodeReviewAssignmentView';
 import CodeReviewerDashboard from './pages/CodeReviewerDashboard';
 import { PrivateRoute } from './wrappers';
 
@@ -20,22 +20,14 @@ export type DecodedJwt = {
 };
 
 const App: React.FC = () => {
-  const [jwt] = useLocalState('', 'jwt');
-
-  const [roles, setRoles] = useState<Role[]>();
-
-  useEffect(() => {
-    if (!jwt) return setRoles([]);
-    setRoles((jwtDecode(jwt) as DecodedJwt).authorities);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [jwt]);
+  const { isCodeReviewer } = useRoles();
 
   return (
     <Routes>
       <Route
         path='/dashboard'
         element={
-          roles?.includes('ROLE_CODE_REVIEWER') ? (
+          isCodeReviewer ? (
             <PrivateRoute>
               <CodeReviewerDashboard />
             </PrivateRoute>
@@ -49,9 +41,15 @@ const App: React.FC = () => {
       <Route
         path='/assignments/:assignmentId'
         element={
-          <PrivateRoute>
-            <AssignmentDetails />
-          </PrivateRoute>
+          isCodeReviewer ? (
+            <PrivateRoute>
+              <CodeReviewAssignmentView />
+            </PrivateRoute>
+          ) : (
+            <PrivateRoute>
+              <AssignmentView />
+            </PrivateRoute>
+          )
         }
       />
 

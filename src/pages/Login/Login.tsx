@@ -29,8 +29,7 @@ const Login = () => {
   );
 
   useEffect(() => {
-    if (jwt) navigate(`/dashboard`);
-    console.log(`JWT: ${jwt}`);
+    if (jwt) navigate(`/dashboard`, { replace: true });
   }, [jwt, navigate]);
 
   async function sendLoginRequest(e: FormEvent) {
@@ -49,6 +48,8 @@ const Login = () => {
   return (
     <Container style={{ height: '100vh' }} className='d-flex align-items-center justify-content-center'>
       <Container style={{ padding: '0', width: '400px' }}>
+        <h3 className='mb-4'>#code_inspect</h3>
+        {/* <h3 className='mb-4'>#CODE_INSPECT</h3> */}
         <Group className='my-3 d-flex align-items-center gap-3' controlId='username'>
           <Control
             type='text'
@@ -68,7 +69,7 @@ const Login = () => {
         <Button
           style={{ width: '400px' }}
           className='my-3 button rounded-0'
-          variant='secondary'
+          variant='dark'
           type='submit'
           onClick={sendLoginRequest}
         >
@@ -76,7 +77,7 @@ const Login = () => {
         </Button>
         <Button
           style={{ width: '400px' }}
-          className='rounded-0 btn-outline-secondary'
+          className='rounded-0 btn-outline-dark'
           variant='light'
           type='submit'
           onClick={() => navigate('/')}

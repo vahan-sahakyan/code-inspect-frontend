@@ -3,7 +3,13 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { Assignment } from '../pages/Dashboard/Dashboard';
 import instance from './axios';
 
-export type AssignmentStatusValues = 'Pending Submission' | 'Submitted' | 'In Review' | 'Needs Update' | 'Completed';
+export type AssignmentStatusValues =
+  | 'Pending Submission'
+  | 'Submitted'
+  | 'In Review'
+  | 'Needs Update'
+  | 'Completed'
+  | 'Resubmitted';
 
 export type AssignmentEnum = {
   assignmentName: string;
