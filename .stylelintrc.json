@@ -12,6 +12,7 @@
         "ignorePseudoClasses": ["global", "export"]
       }
     ],
-    "font-family-no-missing-generic-family-keyword": true
+    "font-family-no-missing-generic-family-keyword": true,
+    "no-descending-specificity": null
   }
 }

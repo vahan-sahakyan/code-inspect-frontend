@@ -1,7 +1,8 @@
 import './AssignmentView.scss';
 
+import { css } from '@emotion/css';
 import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
-import { Badge, Button, ButtonGroup, Col, Container, DropdownButton, Form, Row } from 'react-bootstrap';
+import { Button, ButtonGroup, Col, Container, DropdownButton, Form, Row } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -97,6 +98,7 @@ const AssignmentView = () => {
     }
     prevAssignment.current = assignment;
   }, [assignment, persist]);
+  const isAssignmentCompleted = assignment?.status === 'Completed';
 
   return (
     <Container className='my-5 assignment-view'>
@@ -115,7 +117,8 @@ const AssignmentView = () => {
         </Form.Label>
         <Col sm='9' md='8' lg='6'>
           <DropdownButton
-            variant='dark'
+            variant={isAssignmentCompleted ? 'outline-secondary' : 'dark'}
+            // variant='outline-secondary'
             as={ButtonGroup}
             title={
               selectedAssignment || assignment?.number
@@ -128,8 +131,8 @@ const AssignmentView = () => {
               updateAssignment('number', eventKey);
             }}
             style={{ borderRadius: 0 }}
-            className='rounded-0'
-            disabled={assignment?.status === 'Completed'}
+            className={`rounded-0 ${isAssignmentCompleted ? 'bg-secondary bg-opacity-25' : ''}`}
+            disabled={isAssignmentCompleted}
           >
             {assignmentEnum?.map(({ assignmentName, assignmentNum }) => (
               <DropdownItem
@@ -138,7 +141,12 @@ const AssignmentView = () => {
                 active={
                   selectedAssignment ? assignmentNum === +selectedAssignment : assignmentNum === assignment?.number
                 }
-                variant='dark'
+                className={css`
+                  &.active,
+                  &:active {
+                    background-color: black;
+                  }
+                `}
               >
                 {assignmentName}
               </DropdownItem>
@@ -158,7 +166,7 @@ const AssignmentView = () => {
               onChange={(e: ChangeEvent<HTMLInputElement>) => updateAssignment('githubUrl', e.target.value)}
               placeholder='https://github.com/username/repo-name'
               className='rounded-0'
-              disabled={assignment?.status === 'Completed'}
+              disabled={isAssignmentCompleted}
             />
           </Col>
         </Form.Group>
@@ -173,11 +181,11 @@ const AssignmentView = () => {
               onChange={(e: ChangeEvent<HTMLInputElement>) => updateAssignment('branch', e.target.value)}
               placeholder='example-branch-name'
               className='rounded-0'
-              disabled={assignment?.status === 'Completed'}
+              disabled={isAssignmentCompleted}
             />
           </Col>
         </Form.Group>
-        {assignment?.status === 'Completed' ? (
+        {isAssignmentCompleted ? (
           <>
             <Form.Group as={Row} className='my-3 d-flex align-items-center' controlId='formPlaintextBranch'>
               <Form.Label column sm='3' md='2'>

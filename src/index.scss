@@ -71,9 +71,16 @@ body {
   font-weight: 400;
   line-height: 1.2;
 }
-button {
-  cursor: pointer;
+body,
+.card,
+.bg-white {
+  background-color: #f4f4f0 !important;
 }
+
+.btn:focus-visible {
+  box-shadow: none;
+}
+
 a {
   color: #646cff;
   font-weight: 500;
@@ -84,10 +91,50 @@ a:hover {
 .dropdown-menu.show {
   border-radius: 3px;
 }
-.btn-outline-dark {
+.btn-dark {
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: black;
+    opacity: 1;
+  }
+}
+.dropdown-toggle {
+  border: 1.6px solid black !important;
+}
+.dropdown-toggle.show,
+button:not(.btn-link, .dropdown-toggle) {
+  border: 1.6px solid black !important;
+  &:hover:not(:active),
+  &.dropdown-toggle.show {
+    box-shadow: 0.25rem 0.25rem 0 black;
+    opacity: unset;
+    transform: translate(-0.25rem, -0.25rem);
+  }
+}
+.btn-dark:not(.dropdown-toggle),
+.dropdown-toggle.show {
+  border: 1.6px solid black !important;
+  &:hover,
+  &.show {
+    background-color: var(--bs-warning) !important;
+    color: black;
+  }
+}
+.card.OFF {
+  transition: all 0.14s ease-out 0s !important;
   &:hover {
-    background: inherit !important;
-    color: inherit !important;
+    box-shadow: 0.25rem 0.25rem 0 black;
+    transform: translate(-0.25rem, -0.25rem);
+  }
+}
+.btn-outline-dark {
+  // border: 1.4px solid black !important;
+  background: inherit !important;
+  color: inherit !important;
+  &:hover:not(:active) {
+    box-shadow: 0.25rem 0.25rem 0 black;
+    transform: translate(-0.25rem, -0.25rem);
   }
 }
 .form-control:focus {
@@ -96,5 +143,12 @@ a:hover {
   box-shadow: 0 0 0 0.12rem rgba(182, 182, 182, 0.25);
 }
 input {
-  border: 1.4px solid #000000 !important;
+  border: 1.4px solid black !important;
+}
+button {
+  cursor: pointer;
+  transition: all 0.14s ease-out 0s !important;
+  &:focus-visible:active {
+    box-shadow: none !important;
+  }
 }

@@ -20,7 +20,14 @@ export type Assignment = {
   codeReviewVideoUrl?: string;
   codeReviewer: User;
 };
-
+const STATUS_ORDER: Record<AssignmentStatusValues, number> = {
+  'Pending Submission': 1,
+  'Needs Update': 2,
+  'In Review': 3,
+  Resubmitted: 4,
+  Submitted: 5,
+  Completed: 6,
+};
 const Dashboard = () => {
   const navigate = useNavigate();
   const [assignments, setAssignments] = useState<Assignment[]>();
@@ -86,7 +93,10 @@ const Dashboard = () => {
           My Board
         </div>
         <div className='d-grid gap-4 m-4  justify-content-center align-content-center' style={styles.assignmentsGrid}>
-          {assignments && assignments.map(item => <AssignmentRecord key={item.id} assignment={item} />)}
+          {assignments &&
+            assignments
+              .sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status])
+              .map(item => <AssignmentRecord key={item.id} assignment={item} />)}
         </div>
       </div>
       <div style={{ height: '10rem' }} />
