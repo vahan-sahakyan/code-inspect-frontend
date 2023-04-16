@@ -106,7 +106,7 @@ const CodeReviewAssignmentView = () => {
         ) : (
           <></>
         )}
-        <StatusBadge pill text={assignment?.status?.toUpperCase()} style={{ fontSize: '1rem' }} />
+        <StatusBadge className='rounded-0' text={assignment?.status?.toUpperCase()} style={{ fontSize: '1rem' }} />
       </header>
 
       <div>

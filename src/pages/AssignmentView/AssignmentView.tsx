@@ -108,7 +108,7 @@ const AssignmentView = () => {
         ) : (
           <></>
         )}
-        <StatusBadge pill text={assignment?.status?.toUpperCase()} style={{ fontSize: '1rem' }} />
+        <StatusBadge className='rounded-0' text={assignment?.status?.toUpperCase()} style={{ fontSize: '1rem' }} />
       </header>
 
       <Form.Group as={Row} className='my-3' controlId='formPlaintextEmail'>
@@ -122,7 +122,7 @@ const AssignmentView = () => {
             as={ButtonGroup}
             title={
               selectedAssignment || assignment?.number
-                ? `Assignment ${selectedAssignment || assignment?.number}`
+                ? `Assignment #${selectedAssignment || assignment?.number}`
                 : 'Select an Assignment'
             }
             onSelect={(eventKey: string | null) => {
