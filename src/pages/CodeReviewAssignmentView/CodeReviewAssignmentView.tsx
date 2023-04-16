@@ -1,14 +1,17 @@
 import './CodeReviewAssignmentView.scss';
 
+import { css } from '@emotion/css';
 import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
 import { Badge, Button, ButtonGroup, Col, Container, DropdownButton, Form, Row } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { ReactComponent as CopySVG } from '../../../public/copy.svg';
 import StatusBadge from '../../components/StatusBadge/StatusBadge';
 import { useAssignment } from '../../hooks';
 import { ApiService } from '../../services';
 import { AssignmentStatusValues, GetAssingmentResponse } from '../../services/apiService';
+import { styled, styles } from '../CodeReviewerDashboard/CodeReviewerDashboard.styles';
 import { Assignment } from '../Dashboard/Dashboard';
 
 function isGetAssingmentResponse(res: unknown): res is GetAssingmentResponse {
@@ -110,33 +113,25 @@ const CodeReviewAssignmentView = () => {
       </header>
 
       <div>
-        <Form.Group as={Row} className='my-3' controlId='formPlaintextGitHubUrl'>
+        <Form.Group as={Row} className='my-3 d-flex align-items-center' controlId='formPlaintextGitHubUrl'>
           <Form.Label column sm='3' md='2'>
             GitHub&nbsp;URL:
           </Form.Label>
           <Col sm='9' md='8' lg='6'>
-            <Form.Control
-              type='url'
-              value={assignment?.githubUrl ?? ''}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => updateAssignment('githubUrl', e.target.value)}
-              placeholder='https://github.com/username/repo-name'
-              className='rounded-0'
-              readOnly
-            />
+            <a target={'_blank'} href={assignment?.githubUrl} rel='noreferrer'>
+              {assignment?.githubUrl}
+            </a>
           </Col>
         </Form.Group>
-        <Form.Group as={Row} className='my-3' controlId='formPlaintextBranch'>
+        <Form.Group as={Row} className='my-3 d-flex align-items-center' controlId='formPlaintextBranch'>
           <Form.Label column sm='3' md='2'>
             Branch:
           </Form.Label>
           <Col sm='9' md='8' lg='6'>
-            <Form.Control
-              type='text'
-              value={assignment?.branch ?? ''}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => updateAssignment('branch', e.target.value)}
-              placeholder='example-branch-name'
-              className='rounded-0'
-              readOnly
+            {assignment?.branch}
+            <CopySVG
+              className={styled.copy}
+              onClick={() => navigator.clipboard.writeText(assignment?.branch as string)}
             />
           </Col>
         </Form.Group>

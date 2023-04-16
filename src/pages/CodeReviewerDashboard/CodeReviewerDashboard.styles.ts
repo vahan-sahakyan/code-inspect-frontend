@@ -1,3 +1,4 @@
+import { css } from '@emotion/css';
 import { CSSProperties } from 'react';
 
 export const styles: Record<string, CSSProperties> = {
@@ -5,4 +6,20 @@ export const styles: Record<string, CSSProperties> = {
   wrapperTitle: { marginTop: '-.8rem', width: 'max-content' },
   assignmentsGrid: { gridTemplateColumns: 'repeat(auto-fill, 18rem)', minHeight: '8rem' },
   btnCreateAssignment: { fontSize: 16, margin: '2rem 0', display: 'block' },
+};
+export const styled = {
+  copy: css`
+    width: 1rem;
+    height: 1rem;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    margin-left: 0.7rem;
+    fill: var(--bs-secondary);
+    &:hover:not(:active) {
+      fill: var(--bs-dark);
+    }
+    &:active {
+      fill: var(--bs-warning);
+    }
+  `,
 };
