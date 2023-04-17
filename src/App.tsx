@@ -1,12 +1,13 @@
 import './App.scss';
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 
-import useRoles from './hooks/useRoles';
 import { AssignmentView, Dashboard, Homepage, Login } from './pages';
 import CodeReviewAssignmentView from './pages/CodeReviewAssignmentView';
 import CodeReviewerDashboard from './pages/CodeReviewerDashboard';
+import { selectIsCodeReviewer } from './redux/selectors';
 import { PrivateRoute } from './wrappers';
 
 const roles = ['ROLE_STUDENT', 'ROLE_CODE_REVIEWER'] as const;
@@ -20,7 +21,11 @@ export type DecodedJwt = {
 };
 
 const App: React.FC = () => {
-  const { isCodeReviewer } = useRoles();
+  const isCodeReviewer = useSelector(selectIsCodeReviewer);
+
+  useEffect(() => {
+    console.log({ isCodeReviewer });
+  }, [isCodeReviewer]);
 
   return (
     <Routes>

@@ -75,6 +75,7 @@
     "prettier/prettier": [
       "error",
       {
+        "endOfLine": "auto",
         "singleQuote": true,
         "jsxSingleQuote": true
       }

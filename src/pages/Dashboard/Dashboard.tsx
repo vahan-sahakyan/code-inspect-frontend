@@ -51,7 +51,9 @@ const Dashboard = () => {
 
   function handleLogout() {
     navigate('/login');
-    localStorage.clear();
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('loginResponse');
   }
 
   function handleGoBack() {
@@ -90,7 +92,7 @@ const Dashboard = () => {
       <h2 className='w-75 m-auto m-5 my-0'>Student Dashboard</h2>
       <div className='assignment-wrapper needs-update  mt-5 px-2 w-75 m-auto rounded-0'>
         <div className='h5 text-black px-3 bg-white' style={styles.wrapperTitle}>
-          My Works
+          My Stuff
         </div>
         <div className='d-grid gap-4 m-4  justify-content-center align-content-center' style={styles.assignmentsGrid}>
           {assignments &&

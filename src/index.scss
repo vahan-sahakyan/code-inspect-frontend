@@ -144,7 +144,8 @@ button:not(.btn-link, .dropdown-toggle) {
   box-shadow: unset;
   box-shadow: 0 0 0 0.12rem rgba(182, 182, 182, 0.25);
 }
-input {
+input,
+textarea {
   border: 1.4px solid black !important;
 }
 button {

@@ -1,0 +1,31 @@
+{
+  "files.exclude": {
+    "node_modules": true,
+    "dist": true,
+    "**/.gitignore": true,
+    ".eslintignore": true,
+    ".prettierignore": true,
+    "package-lock.json": true,
+    "**/*.d.ts": true,
+    ".husky": true,
+    ".eslintcache": true,
+    ".stylelintcache": true
+  },
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true,
+    "source.sortImports": true
+  },
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[javascriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "liveServer.settings.root": "/out",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
+}

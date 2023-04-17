@@ -40,7 +40,9 @@ const CodeReviewerDashboard = () => {
 
   function handleLogout() {
     navigate('/login');
-    localStorage.clear();
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('loginResponse');
   }
   function handleGoBack() {
     navigate('/');

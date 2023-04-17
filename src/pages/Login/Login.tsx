@@ -1,9 +1,14 @@
 import { AxiosError, AxiosResponse } from 'axios';
+import jwtDecode from 'jwt-decode';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import { DecodedJwt } from '../../App';
 import { useLocalState } from '../../hooks';
+import { selectUserRole } from '../../redux/selectors';
+import { setUserRole } from '../../redux/user/user.slice';
 import { instance } from '../../services';
 const { Group, Control } = Form;
 
@@ -18,6 +23,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>();
   const [password, setPassword] = useState<string>();
+  const dispatch = useDispatch();
   const user: User = {
     username,
     password,
@@ -27,6 +33,11 @@ const Login = () => {
     {} as AxiosResponse<User>,
     'loginResponse'
   );
+  const isCodeReviewer = useSelector(selectUserRole);
+  useEffect(() => {
+    console.log(isCodeReviewer);
+    if (jwt) navigate(`/dashboard`, { replace: true });
+  }, [isCodeReviewer, jwt, navigate]);
 
   useEffect(() => {
     if (jwt) navigate(`/dashboard`, { replace: true });
@@ -38,7 +49,10 @@ const Login = () => {
     try {
       const response = await instance.post('api/auth/login', user);
       setLoginResponse(response);
-      setJwt(response?.data.password);
+      const { password } = response?.data;
+      const { authorities } = jwtDecode(password) as DecodedJwt;
+      setJwt(password);
+      dispatch(setUserRole(authorities.at(0) as string));
     } catch (error) {
       setLoginResponse(error as AxiosError);
       localStorage.removeItem('jwt');

@@ -1,5 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
 
+import { CommentRequest } from '../pages/AssignmentView/AssignmentView';
 import { Assignment } from '../pages/Dashboard/Dashboard';
 import instance from './axios';
 
@@ -78,6 +79,17 @@ abstract class ApiService {
         headers: { Authorization: `Bearer ${ApiService.getJwt()}` },
       });
 
+      return response?.data;
+    } catch (error) {
+      throw error as Error;
+    }
+  };
+
+  static postComment = async (body: CommentRequest) => {
+    try {
+      const response = await instance.post('/api/comments', body, {
+        headers: { Authorization: `Bearer ${ApiService.getJwt()}` },
+      });
       return response?.data;
     } catch (error) {
       throw error as Error;

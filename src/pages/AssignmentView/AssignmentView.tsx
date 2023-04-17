@@ -1,14 +1,14 @@
 import './AssignmentView.scss';
 
 import { css } from '@emotion/css';
-import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Button, ButtonGroup, Col, Container, DropdownButton, Form, Row } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import StatusBadge from '../../components/StatusBadge/StatusBadge';
 import { useAssignment } from '../../hooks';
-import { ApiService } from '../../services';
+import { ApiService, instance } from '../../services';
 import { AssignmentStatusValues, GetAssingmentResponse } from '../../services/apiService';
 import { Assignment } from '../Dashboard/Dashboard';
 
@@ -17,6 +17,11 @@ function isGetAssingmentResponse(res: unknown): res is GetAssingmentResponse {
     !!res && typeof res === 'object' && Object.keys(res).some(key => ['assignment', 'assignmentEnum'].includes(key))
   );
 }
+
+export type CommentRequest = {
+  comment: string;
+  assignment: number;
+};
 
 const AssignmentView = () => {
   const params = useParams();
@@ -33,6 +38,15 @@ const AssignmentView = () => {
     selectedAssignment,
     setSelectedAssignment,
   } = useAssignment();
+  const [comment, setComment] = useState('');
+
+  const submitComment = useCallback(
+    async function () {
+      const response = await ApiService.postComment({ comment, assignment: assignment?.id as number });
+      console.log(response);
+    },
+    [assignment?.id, comment]
+  );
 
   const fetchAssignment = useCallback(
     async function (id: string | number) {
@@ -224,6 +238,20 @@ const AssignmentView = () => {
             </Container>
           </Col>
         )}
+      </div>
+      <div className='mt-5'>
+        <textarea
+          className={css`
+            width: 100%;
+            padding: 0.5rem 0.7rem;
+            outline: none;
+          `}
+          value={comment}
+          onChange={e => setComment(e.target.value)}
+        ></textarea>
+        <Button variant='dark' onClick={submitComment}>
+          Post Comment
+        </Button>
       </div>
     </Container>
   );
