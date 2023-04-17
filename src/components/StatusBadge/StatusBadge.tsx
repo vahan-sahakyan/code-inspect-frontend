@@ -1,13 +1,13 @@
 import React, { CSSProperties, useCallback } from 'react';
 import { Badge } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
-interface StatusBadgeProps {
+type TStatusBadgeProps = {
   text?: string;
   pill?: boolean;
   style?: CSSProperties;
   className?: string;
-}
-const StatusBadge: React.FC<StatusBadgeProps> = props => {
+};
+const StatusBadge: React.FC<TStatusBadgeProps> = props => {
   const { text, style, pill, className } = props;
 
   const getColorOfBadge = useCallback((): Variant => {

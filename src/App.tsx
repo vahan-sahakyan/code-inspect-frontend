@@ -11,21 +11,17 @@ import { selectIsCodeReviewer } from './redux/selectors';
 import { PrivateRoute } from './wrappers';
 
 const roles = ['ROLE_STUDENT', 'ROLE_CODE_REVIEWER'] as const;
-export type Role = (typeof roles)[number];
+export type TRole = (typeof roles)[number];
 
-export type DecodedJwt = {
+export type TDecodedJwt = {
   exp: number;
   iat: number;
   sub: string;
-  authorities: Array<Role>;
+  authorities: Array<TRole>;
 };
 
 const App: React.FC = () => {
   const isCodeReviewer = useSelector(selectIsCodeReviewer);
-
-  useEffect(() => {
-    console.log({ isCodeReviewer });
-  }, [isCodeReviewer]);
 
   return (
     <Routes>

@@ -7,20 +7,20 @@ import { useNavigate } from 'react-router-dom';
 
 import { AssignmentRecord } from '../../components';
 import { ApiService } from '../../services';
-import { AssignmentStatusValues } from '../../services/apiService';
-import { User } from '../Login/Login';
+import { TAssignmentStatusValues } from '../../services/apiService';
+import { TUser } from '../Login/Login';
 import { styles } from './Dashboard.styles';
 
-export type Assignment = {
+export type TAssignment = {
   id: number;
   number?: number;
-  status: AssignmentStatusValues;
+  status: TAssignmentStatusValues;
   githubUrl?: string;
   branch?: string;
   codeReviewVideoUrl?: string;
-  codeReviewer: User;
+  codeReviewer: TUser;
 };
-const STATUS_ORDER: Record<AssignmentStatusValues, number> = {
+const STATUS_ORDER: Record<TAssignmentStatusValues, number> = {
   'Pending Submission': 1,
   'Needs Update': 2,
   'In Review': 3,
@@ -30,7 +30,7 @@ const STATUS_ORDER: Record<AssignmentStatusValues, number> = {
 };
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [assignments, setAssignments] = useState<Assignment[]>();
+  const [assignments, setAssignments] = useState<TAssignment[]>();
   useEffect(() => {
     fetchAssignments();
   }, []);

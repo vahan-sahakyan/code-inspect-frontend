@@ -5,20 +5,20 @@ import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { DecodedJwt } from '../../App';
+import { TDecodedJwt } from '../../App';
 import { AssignmentRecord } from '../../components';
 import { useLocalState } from '../../hooks';
 import { ApiService } from '../../services';
-import { Assignment } from '../Dashboard/Dashboard';
+import { TAssignment } from '../Dashboard/Dashboard';
 import { styles } from './CodeReviewerDashboard.styles';
 
 const CodeReviewerDashboard = () => {
   const navigate = useNavigate();
   const [jwt] = useLocalState<string>('', 'jwt');
-  const [assignments, setAssignments] = useState<Assignment[]>();
+  const [assignments, setAssignments] = useState<TAssignment[]>();
 
-  async function claimAssignment(assignment: Assignment) {
-    const decodedJwt: DecodedJwt = jwtDecode(jwt);
+  async function claimAssignment(assignment: TAssignment) {
+    const decodedJwt: TDecodedJwt = jwtDecode(jwt);
     assignment = {
       ...assignment,
       codeReviewer: {

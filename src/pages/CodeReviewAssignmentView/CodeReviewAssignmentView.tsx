@@ -10,11 +10,11 @@ import { ReactComponent as CopySVG } from '../../../public/copy.svg';
 import StatusBadge from '../../components/StatusBadge/StatusBadge';
 import { useAssignment } from '../../hooks';
 import { ApiService } from '../../services';
-import { AssignmentStatusValues, GetAssingmentResponse } from '../../services/apiService';
+import { TAssignmentStatusValues, TGetAssingmentResponse } from '../../services/apiService';
 import { styled, styles } from '../CodeReviewerDashboard/CodeReviewerDashboard.styles';
-import { Assignment } from '../Dashboard/Dashboard';
+import { TAssignment } from '../Dashboard/Dashboard';
 
-function isGetAssingmentResponse(res: unknown): res is GetAssingmentResponse {
+function isGetAssingmentResponse(res: unknown): res is TGetAssingmentResponse {
   return (
     !!res && typeof res === 'object' && Object.keys(res).some(key => ['assignment', 'assignmentEnum'].includes(key))
   );
@@ -55,8 +55,8 @@ const CodeReviewAssignmentView = () => {
     [setAssignment, setAssignmentEnum, setAssignmentStatusEnum]
   );
   const updateAssignment = useCallback(
-    function (prop: keyof Assignment, value: string) {
-      setAssignment(prev => ({ ...prev, [prop]: value } as Assignment));
+    function (prop: keyof TAssignment, value: string) {
+      setAssignment(prev => ({ ...prev, [prop]: value } as TAssignment));
     },
     [setAssignment]
   );
@@ -76,7 +76,7 @@ const CodeReviewAssignmentView = () => {
   );
 
   const save = useCallback(
-    async function (status: AssignmentStatusValues) {
+    async function (status: TAssignmentStatusValues) {
       if (!assignmentStatusEnum) return;
 
       if (assignment?.status !== status) {

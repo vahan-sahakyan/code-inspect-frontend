@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-import { Assignment } from '../pages/Dashboard/Dashboard';
-import { AssignmentEnum, AssignmentStatusEnum } from '../services/apiService';
+import { TAssignment } from '../pages/Dashboard/Dashboard';
+import { TAssignmentEnum, TAssignmentStatusEnum } from '../services/apiService';
 
 export default function useAssignment() {
-  const [assignment, setAssignment] = useState<Assignment>();
-  const [assignmentEnum, setAssignmentEnum] = useState<AssignmentEnum[]>();
-  const [assignmentStatusEnum, setAssignmentStatusEnum] = useState<AssignmentStatusEnum[]>();
+  const [assignment, setAssignment] = useState<TAssignment>();
+  const [assignmentEnum, setAssignmentEnum] = useState<TAssignmentEnum[]>();
+  const [assignmentStatusEnum, setAssignmentStatusEnum] = useState<TAssignmentStatusEnum[]>();
   const [selectedAssignment, setSelectedAssignment] = useState<string>();
   return {
     assignment,

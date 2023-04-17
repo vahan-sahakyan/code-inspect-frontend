@@ -10,7 +10,7 @@ const store = configureStore({
   middleware: [logger],
 });
 
-export type RootState = ReturnType<typeof store.getState>;
-export type appDispatch = typeof store.dispatch;
+export type TRootState = ReturnType<typeof store.getState>;
+export type TAppDispatch = typeof store.dispatch;
 
 export default store;

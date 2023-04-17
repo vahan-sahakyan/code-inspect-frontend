@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Role } from '../../App';
+import { TRole } from '../../App';
 
 type UserInitialState = {
   isLoading: boolean;
   error: string | null;
-  userRole: Role | '';
+  userRole: string;
 };
 
 const userSlice = createSlice({
@@ -16,7 +16,7 @@ const userSlice = createSlice({
     userRole: '',
   } as UserInitialState,
   reducers: {
-    setUserRole: (state, action: PayloadAction<Role>) => {
+    setUserRole: (state, action: PayloadAction<string>) => {
       state.userRole = action.payload;
       localStorage.setItem('userRole', action.payload);
     },

@@ -9,26 +9,45 @@ import { useNavigate, useParams } from 'react-router-dom';
 import StatusBadge from '../../components/StatusBadge/StatusBadge';
 import { useAssignment, useLocalState } from '../../hooks';
 import { ApiService } from '../../services';
-import { AssignmentStatusValues, GetAssingmentResponse } from '../../services/apiService';
-import { Assignment } from '../Dashboard/Dashboard';
+import { TAssignmentStatusValues, TGetAssingmentResponse } from '../../services/apiService';
+import { TAssignment } from '../Dashboard/Dashboard';
 
-function isGetAssingmentResponse(res: unknown): res is GetAssingmentResponse {
+function isGetAssingmentResponse(res: unknown): res is TGetAssingmentResponse {
   return (
     !!res && typeof res === 'object' && Object.keys(res).some(key => ['assignment', 'assignmentEnum'].includes(key))
   );
 }
 
-export type CommentRequest = {
+export type TCommentRequest = {
   assignmentId: number;
   text: string;
   user: string;
 };
 
+export type TComment = {
+  createdBy: {
+    accountNonExpired: boolean;
+    accountNonLocked: boolean;
+    cohortStartDate: string;
+    credentialsNonExpired: boolean;
+    enabled: boolean;
+    id: number;
+    password: string;
+    username: string;
+    name: string;
+  };
+  createdDate: string;
+  id: number;
+  text: string;
+};
+
 const AssignmentView = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const { assignmentId } = params;
+  const assignmentId = parseInt(params.assignmentId as string);
   const [jwt] = useLocalState<string>('', 'jwt');
+  const [comment, setComment] = useState('');
+  const [comments, setComments] = useState<TComment[]>([]);
 
   const {
     assignment,
@@ -40,18 +59,19 @@ const AssignmentView = () => {
     selectedAssignment,
     setSelectedAssignment,
   } = useAssignment();
-  const [comment, setComment] = useState('');
 
   const submitComment = useCallback(
     async function () {
-      const response = await ApiService.postComment({
-        assignmentId: parseInt(assignmentId as string),
+      const response: TComment = await ApiService.postComment({
+        assignmentId: assignmentId,
         text: comment,
         user: jwt,
       });
-      console.log(response);
+
+      setComments([response, ...comments]);
+      setComment('');
     },
-    [assignmentId, comment, jwt]
+    [assignmentId, comment, comments, jwt]
   );
 
   const fetchAssignment = useCallback(
@@ -73,8 +93,8 @@ const AssignmentView = () => {
     [setAssignment, setAssignmentEnum, setAssignmentStatusEnum]
   );
   const updateAssignment = useCallback(
-    function (prop: keyof Assignment, value: string) {
-      setAssignment(prev => ({ ...prev, [prop]: value } as Assignment));
+    function (prop: keyof TAssignment, value: string) {
+      setAssignment(prev => ({ ...prev, [prop]: value } as TAssignment));
     },
     [setAssignment]
   );
@@ -94,7 +114,7 @@ const AssignmentView = () => {
   );
 
   const save = useCallback(
-    async function (status: AssignmentStatusValues) {
+    async function (status: TAssignmentStatusValues) {
       if (!assignmentStatusEnum) return;
 
       if (assignment?.status !== status) {
@@ -106,9 +126,25 @@ const AssignmentView = () => {
     [assignment?.status, assignmentStatusEnum, persist, updateAssignment]
   );
 
+  const fetchComments = useCallback(
+    async function () {
+      try {
+        const res = await ApiService.getComments(assignmentId);
+        setComments(res.reverse());
+      } catch (error) {
+        console.warn(error);
+      }
+    },
+    [assignmentId]
+  );
+
   useEffect(() => {
     assignmentId && fetchAssignment(assignmentId);
   }, [assignmentId, fetchAssignment]);
+
+  useEffect(() => {
+    assignmentId && fetchComments();
+  }, [assignmentId, fetchComments]);
 
   const prevAssignment = useRef(assignment);
 
@@ -245,20 +281,32 @@ const AssignmentView = () => {
           </Col>
         )}
       </div>
-      <div className='mt-5'>
+      <Col sm='12' md='10' lg='8' className='pe-lg-2 pe-md-1 pe-sm-0 mt-5'>
         <textarea
           className={css`
             width: 100%;
             padding: 0.5rem 0.7rem;
             outline: none;
+            height: 4rem;
           `}
           value={comment}
           onChange={e => setComment(e.target.value)}
-        ></textarea>
-        <Button variant='dark' onClick={submitComment}>
-          Post Comment
-        </Button>
-      </div>
+        />
+        <div className='d-flex justify-content-end'>
+          <Button variant='dark' onClick={submitComment}>
+            Post Comment
+          </Button>
+        </div>
+        <div className='comments-container mt-4'>
+          {comments.map(comment => (
+            <div key={comment.id} className='mb-2'>
+              <span className='text-muted'>{comment.createdBy.name}:</span>
+              &nbsp;
+              <span>{comment.text}</span>
+            </div>
+          ))}
+        </div>
+      </Col>
     </Container>
   );
 };

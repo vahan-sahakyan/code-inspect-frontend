@@ -1,10 +1,10 @@
 import { AxiosError, AxiosResponse } from 'axios';
 
-import { CommentRequest } from '../pages/AssignmentView/AssignmentView';
-import { Assignment } from '../pages/Dashboard/Dashboard';
+import { TCommentRequest } from '../pages/AssignmentView/AssignmentView';
+import { TAssignment } from '../pages/Dashboard/Dashboard';
 import instance from './axios';
 
-export type AssignmentStatusValues =
+export type TAssignmentStatusValues =
   | 'Pending Submission'
   | 'Submitted'
   | 'In Review'
@@ -12,20 +12,20 @@ export type AssignmentStatusValues =
   | 'Completed'
   | 'Resubmitted';
 
-export type AssignmentEnum = {
+export type TAssignmentEnum = {
   assignmentName: string;
   assignmentNum: number;
 };
 
-export type AssignmentStatusEnum = {
-  status: AssignmentStatusValues;
+export type TAssignmentStatusEnum = {
+  status: TAssignmentStatusValues;
   step: number;
 };
 
-export type GetAssingmentResponse = {
-  assignment: Assignment;
-  assignmentEnum: AssignmentEnum[];
-  assignmentStatusEnum: AssignmentStatusEnum[];
+export type TGetAssingmentResponse = {
+  assignment: TAssignment;
+  assignmentEnum: TAssignmentEnum[];
+  assignmentStatusEnum: TAssignmentStatusEnum[];
 };
 
 abstract class ApiService {
@@ -49,9 +49,9 @@ abstract class ApiService {
     }
   };
 
-  static getAssignment = async (id: number | string): Promise<GetAssingmentResponse | AxiosError> => {
+  static getAssignment = async (id: number | string): Promise<TGetAssingmentResponse | AxiosError> => {
     try {
-      const response: AxiosResponse<GetAssingmentResponse> = await instance.get(`/api/assignments/${id}`, {
+      const response: AxiosResponse<TGetAssingmentResponse> = await instance.get(`/api/assignments/${id}`, {
         headers: { Authorization: `Bearer ${ApiService.getJwt()}` },
       });
 
@@ -73,7 +73,7 @@ abstract class ApiService {
     }
   };
 
-  static claimAssignment = async (assignment: Assignment) => {
+  static claimAssignment = async (assignment: TAssignment) => {
     try {
       const response = await instance.put(`/api/assignments/${assignment.id}`, assignment, {
         headers: { Authorization: `Bearer ${ApiService.getJwt()}` },
@@ -85,7 +85,7 @@ abstract class ApiService {
     }
   };
 
-  static postComment = async (body: CommentRequest) => {
+  static postComment = async (body: TCommentRequest) => {
     try {
       const response = await instance.post('/api/comments', body, {
         headers: { Authorization: `Bearer ${ApiService.getJwt()}` },
@@ -95,6 +95,17 @@ abstract class ApiService {
       throw error as Error;
     }
   };
+
+  static async getComments(assignmentId: number | undefined) {
+    try {
+      const response = await instance.get(`/api/comments?assignmentId=${assignmentId}`, {
+        headers: { Authorization: `Bearer ${ApiService.getJwt()}` },
+      });
+      return response.data;
+    } catch (error) {
+      throw error as Error;
+    }
+  }
 }
 
 export default ApiService;

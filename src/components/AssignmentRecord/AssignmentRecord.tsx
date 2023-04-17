@@ -2,15 +2,15 @@ import { Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import useRoles from '../../hooks/useRoles';
-import { Assignment } from '../../pages/Dashboard/Dashboard';
-import { AssignmentStatusValues } from '../../services/apiService';
+import { TAssignment } from '../../pages/Dashboard/Dashboard';
+import { TAssignmentStatusValues } from '../../services/apiService';
 import StatusBadge from '../StatusBadge/StatusBadge';
 
-type AssignmentRecordProps<T> = {
+type TAssignmentRecordProps<T> = {
   assignment: T;
   claimAssignment?: (assignment: T) => Promise<void>;
 };
-export default function AssignmentRecord({ assignment, claimAssignment }: AssignmentRecordProps<Assignment>) {
+export default function AssignmentRecord({ assignment, claimAssignment }: TAssignmentRecordProps<TAssignment>) {
   const navigate = useNavigate();
   const { isCodeReviewer } = useRoles();
   return (
@@ -41,7 +41,7 @@ export default function AssignmentRecord({ assignment, claimAssignment }: Assign
                 }
               }}
             >
-              {(['In Review'] as AssignmentStatusValues[]).includes(assignment.status) ? 'Edit' : 'Claim'}
+              {(['In Review'] as TAssignmentStatusValues[]).includes(assignment.status) ? 'Edit' : 'Claim'}
             </Button>
           ) : (
             <Button

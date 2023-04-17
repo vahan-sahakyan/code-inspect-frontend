@@ -5,14 +5,14 @@ import { Button, Container, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { DecodedJwt } from '../../App';
+import { TDecodedJwt } from '../../App';
 import { useLocalState } from '../../hooks';
 import { selectUserRole } from '../../redux/selectors';
 import { setUserRole } from '../../redux/user/user.slice';
 import { instance } from '../../services';
 const { Group, Control } = Form;
 
-export type User = {
+export type TUser = {
   id?: number;
   username?: string;
   password?: string;
@@ -24,20 +24,16 @@ const Login = () => {
   const [username, setUsername] = useState<string>();
   const [password, setPassword] = useState<string>();
   const dispatch = useDispatch();
-  const user: User = {
+  const user: TUser = {
     username,
     password,
   };
   const [jwt, setJwt] = useLocalState<string>('', 'jwt');
-  const [, setLoginResponse] = useLocalState<AxiosResponse<User> | AxiosError>(
-    {} as AxiosResponse<User>,
+  const [, setLoginResponse] = useLocalState<AxiosResponse<TUser> | AxiosError>(
+    {} as AxiosResponse<TUser>,
     'loginResponse'
   );
   const isCodeReviewer = useSelector(selectUserRole);
-  useEffect(() => {
-    console.log(isCodeReviewer);
-    if (jwt) navigate(`/dashboard`, { replace: true });
-  }, [isCodeReviewer, jwt, navigate]);
 
   useEffect(() => {
     if (jwt) navigate(`/dashboard`, { replace: true });
@@ -50,7 +46,7 @@ const Login = () => {
       const response = await instance.post('api/auth/login', user);
       setLoginResponse(response);
       const { password } = response?.data;
-      const { authorities } = jwtDecode(password) as DecodedJwt;
+      const { authorities } = jwtDecode(password) as TDecodedJwt;
       setJwt(password);
       dispatch(setUserRole(authorities.at(0) as string));
     } catch (error) {
@@ -63,7 +59,6 @@ const Login = () => {
     <Container style={{ height: '100vh' }} className='d-flex align-items-center justify-content-center'>
       <Container style={{ padding: '0', width: '400px' }}>
         <h3 className='mb-4'>#code_inspect</h3>
-        {/* <h3 className='mb-4'>#CODE_INSPECT</h3> */}
         <Group className='my-3 d-flex align-items-center gap-3' controlId='username'>
           <Control
             type='text'
