@@ -7,8 +7,8 @@ import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import StatusBadge from '../../components/StatusBadge/StatusBadge';
-import { useAssignment } from '../../hooks';
-import { ApiService, instance } from '../../services';
+import { useAssignment, useLocalState } from '../../hooks';
+import { ApiService } from '../../services';
 import { AssignmentStatusValues, GetAssingmentResponse } from '../../services/apiService';
 import { Assignment } from '../Dashboard/Dashboard';
 
@@ -19,14 +19,16 @@ function isGetAssingmentResponse(res: unknown): res is GetAssingmentResponse {
 }
 
 export type CommentRequest = {
-  comment: string;
-  assignment: number;
+  assignmentId: number;
+  text: string;
+  user: string;
 };
 
 const AssignmentView = () => {
   const params = useParams();
   const navigate = useNavigate();
   const { assignmentId } = params;
+  const [jwt] = useLocalState<string>('', 'jwt');
 
   const {
     assignment,
@@ -42,10 +44,14 @@ const AssignmentView = () => {
 
   const submitComment = useCallback(
     async function () {
-      const response = await ApiService.postComment({ comment, assignment: assignment?.id as number });
+      const response = await ApiService.postComment({
+        assignmentId: parseInt(assignmentId as string),
+        text: comment,
+        user: jwt,
+      });
       console.log(response);
     },
-    [assignment?.id, comment]
+    [assignmentId, comment, jwt]
   );
 
   const fetchAssignment = useCallback(
