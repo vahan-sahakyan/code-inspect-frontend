@@ -6,12 +6,12 @@ import { Button, ButtonGroup, Col, Container, DropdownButton, Form, Row } from '
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { Comment } from '../../components';
 import StatusBadge from '../../components/StatusBadge/StatusBadge';
 import { useAssignment, useLocalState } from '../../hooks';
 import { ApiService } from '../../services';
 import { TAssignmentStatusValues, TGetAssingmentResponse } from '../../services/apiService';
 import { TAssignment } from '../Dashboard/Dashboard';
-
 function isGetAssingmentResponse(res: unknown): res is TGetAssingmentResponse {
   return (
     !!res && typeof res === 'object' && Object.keys(res).some(key => ['assignment', 'assignmentEnum'].includes(key))
@@ -299,11 +299,7 @@ const AssignmentView = () => {
         </div>
         <div className='comments-container mt-4'>
           {comments.map(comment => (
-            <div key={comment.id} className='mb-2'>
-              <span className='text-muted'>{comment.createdBy.name}:</span>
-              &nbsp;
-              <span>{comment.text}</span>
-            </div>
+            <Comment comment={comment} key={comment.id} />
           ))}
         </div>
       </Col>
