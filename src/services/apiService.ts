@@ -106,6 +106,17 @@ abstract class ApiService {
       throw error as Error;
     }
   }
+
+  static editComment = async (body: TCommentRequest) => {
+    try {
+      const response = await instance.put(`/api/comments/${body.id}`, body, {
+        headers: { Authorization: `Bearer ${ApiService.getJwt()}` },
+      });
+      return response?.data;
+    } catch (error) {
+      throw error as Error;
+    }
+  };
 }
 
 export default ApiService;

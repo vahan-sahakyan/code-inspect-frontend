@@ -19,6 +19,7 @@ function isGetAssingmentResponse(res: unknown): res is TGetAssingmentResponse {
 }
 
 export type TCommentRequest = {
+  id?: number;
   assignmentId: number;
   text: string;
   user: string;
@@ -47,7 +48,9 @@ const AssignmentView = () => {
   const assignmentId = parseInt(params.assignmentId as string);
   const [jwt] = useLocalState<string>('', 'jwt');
   const [comment, setComment] = useState('');
-  const [comments, setComments] = useState<TComment[]>([]);
+  const [comments, setComments] = useState<Array<TComment>>([]);
+  const [editingComment, setEditingComment] = useState<TComment>();
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const {
     assignment,
@@ -61,17 +64,47 @@ const AssignmentView = () => {
   } = useAssignment();
 
   const submitComment = useCallback(
-    async function () {
-      const response: TComment = await ApiService.postComment({
-        assignmentId: assignmentId,
-        text: comment,
-        user: jwt,
-      });
+    async function (passedComment?: TComment) {
+      try {
+        if (passedComment) {
+          const response: TComment = await ApiService.editComment({
+            id: passedComment.id,
+            assignmentId: assignmentId,
+            text: comment,
+            user: jwt,
+          });
 
-      setComments([response, ...comments]);
-      setComment('');
+          setComments(comments.map(item => (item.id === response.id ? response : item)));
+        } else {
+          const response: TComment = await ApiService.postComment({
+            assignmentId: assignmentId,
+            text: comment,
+            user: jwt,
+          });
+
+          setComments([response, ...comments]);
+        }
+      } finally {
+        setComment('');
+        setEditingComment(undefined);
+      }
     },
     [assignmentId, comment, comments, jwt]
+  );
+  const handleDeleteComment = useCallback(async function (id: number) {
+    console.log(id);
+  }, []);
+
+  const handleEditComment = useCallback(
+    async function (id: number) {
+      scrollTo({ top: 0 });
+      textareaRef.current?.focus();
+
+      const idx = comments.findIndex(item => item.id === id);
+      setEditingComment(comments[idx]);
+      setComment(comments[idx].text);
+    },
+    [comments]
   );
 
   const fetchAssignment = useCallback(
@@ -283,6 +316,7 @@ const AssignmentView = () => {
       </div>
       <Col sm='12' md='10' lg='8' className='pe-lg-2 pe-md-1 pe-sm-0 mt-5'>
         <textarea
+          ref={textareaRef}
           className={css`
             width: 100%;
             padding: 0.5rem 0.7rem;
@@ -293,13 +327,19 @@ const AssignmentView = () => {
           onChange={e => setComment(e.target.value)}
         />
         <div className='d-flex justify-content-end'>
-          <Button variant='dark' onClick={submitComment}>
-            Post Comment
+          <Button variant='dark' onClick={() => submitComment(editingComment)}>
+            {!editingComment ? 'Post Comment' : 'Update Comment'}
           </Button>
         </div>
         <div className='comments-container mt-4'>
           {comments.map(comment => (
-            <Comment comment={comment} key={comment.id} />
+            <Comment
+              //
+              deleteComment={handleDeleteComment}
+              editComment={handleEditComment}
+              comment={comment}
+              key={comment.id}
+            />
           ))}
         </div>
       </Col>
