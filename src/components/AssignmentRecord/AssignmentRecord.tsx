@@ -51,7 +51,7 @@ export default function AssignmentRecord({ assignment, claimAssignment }: TAssig
                 navigate(`/assignments/${assignment.id}`);
               }}
             >
-              {(['Completed'] as AssignmentStatusValues[]).includes(assignment.status) ? 'View Code Review' : 'Edit'}
+              {(['Completed'] as TAssignmentStatusValues[]).includes(assignment.status) ? 'View Code Review' : 'Edit'}
             </Button>
           )}
         </Card.Body>

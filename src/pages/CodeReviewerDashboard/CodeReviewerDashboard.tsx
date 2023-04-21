@@ -3,7 +3,7 @@ import './CodeReviewerDashboard.scss';
 import jwtDecode from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { TDecodedJwt } from '../../App';
 import { AssignmentRecord } from '../../components';

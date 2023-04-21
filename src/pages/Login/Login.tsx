@@ -2,12 +2,11 @@ import { AxiosError, AxiosResponse } from 'axios';
 import jwtDecode from 'jwt-decode';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { TDecodedJwt } from '../../App';
 import { useLocalState } from '../../hooks';
-import { selectUserRole } from '../../redux/selectors';
 import { setUserRole } from '../../redux/user/user.slice';
 import { instance } from '../../services';
 const { Group, Control } = Form;
@@ -33,7 +32,6 @@ const Login = () => {
     {} as AxiosResponse<TUser>,
     'loginResponse'
   );
-  const isCodeReviewer = useSelector(selectUserRole);
 
   useEffect(() => {
     if (jwt) navigate(`/dashboard`, { replace: true });

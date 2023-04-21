@@ -2,7 +2,8 @@ import { css } from '@emotion/css';
 import React from 'react';
 import { Button } from 'react-bootstrap';
 
-import { TComment } from '../../pages/AssignmentView/AssignmentView';
+import { TComment } from '../../hooks/useAssignment';
+
 type TCommentProps = {
   comment: TComment;
   deleteComment: (id: number) => void;
@@ -21,7 +22,7 @@ const Comment: React.FC<TCommentProps> = ({
   const date = new Date(createdDate);
 
   const year = date.getFullYear();
-  const monthLong = MONTHS_LONG[date.getMonth()];
+  // const monthLong = MONTHS_LONG[date.getMonth()];
   const monthShort = MONTHS_SHORT[date.getMonth()];
   const day = date.getDate();
   const hour = date.getHours();

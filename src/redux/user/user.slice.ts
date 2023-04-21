@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { TRole } from '../../App';
-
 type UserInitialState = {
   isLoading: boolean;
   error: string | null;

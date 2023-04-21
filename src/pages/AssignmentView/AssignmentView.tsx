@@ -1,6 +1,5 @@
 import './AssignmentView.scss';
 
-import { css } from '@emotion/css';
 import { ChangeEvent } from 'react';
 import { Button, ButtonGroup, Col, Container, DropdownButton, Form, Row } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
