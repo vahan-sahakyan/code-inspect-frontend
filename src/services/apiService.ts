@@ -1,6 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
 
-import { TCommentRequest } from '../pages/AssignmentView/AssignmentView';
+import { TCommentRequest } from '../hooks/useAssignment';
 import { TAssignment } from '../pages/Dashboard/Dashboard';
 import instance from './axios';
 
@@ -110,6 +110,17 @@ abstract class ApiService {
   static editComment = async (body: TCommentRequest) => {
     try {
       const response = await instance.put(`/api/comments/${body.id}`, body, {
+        headers: { Authorization: `Bearer ${ApiService.getJwt()}` },
+      });
+      return response?.data;
+    } catch (error) {
+      throw error as Error;
+    }
+  };
+
+  static deleteComment = async (commentId: number) => {
+    try {
+      const response = await instance.delete(`/api/comments/${commentId}`, {
         headers: { Authorization: `Bearer ${ApiService.getJwt()}` },
       });
       return response?.data;

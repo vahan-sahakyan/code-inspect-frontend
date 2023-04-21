@@ -1,114 +1,35 @@
 import './CodeReviewAssignmentView.scss';
 
-import { css } from '@emotion/css';
-import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
-import { Badge, Button, ButtonGroup, Col, Container, DropdownButton, Form, Row } from 'react-bootstrap';
-import DropdownItem from 'react-bootstrap/esm/DropdownItem';
-import { useNavigate, useParams } from 'react-router-dom';
+import { ChangeEvent } from 'react';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 import { ReactComponent as CopySVG } from '../../../public/copy.svg';
+import { Comment } from '../../components';
 import StatusBadge from '../../components/StatusBadge/StatusBadge';
 import { useAssignment } from '../../hooks';
-import { ApiService } from '../../services';
-import { TAssignmentStatusValues, TGetAssingmentResponse } from '../../services/apiService';
-import { styled, styles } from '../CodeReviewerDashboard/CodeReviewerDashboard.styles';
-import { TAssignment } from '../Dashboard/Dashboard';
-
-function isGetAssingmentResponse(res: unknown): res is TGetAssingmentResponse {
-  return (
-    !!res && typeof res === 'object' && Object.keys(res).some(key => ['assignment', 'assignmentEnum'].includes(key))
-  );
-}
+import { styled } from '../CodeReviewerDashboard/CodeReviewerDashboard.styles';
 
 const CodeReviewAssignmentView = () => {
-  const params = useParams();
-  const navigate = useNavigate();
-  const { assignmentId } = params;
-
   const {
     assignment,
-    setAssignment,
-    assignmentEnum,
-    setAssignmentEnum,
-    assignmentStatusEnum,
-    setAssignmentStatusEnum,
     selectedAssignment,
-    setSelectedAssignment,
+    save,
+    updateAssignment,
+    navigate,
+    comment,
+    setComment,
+    comments,
+    editingComment,
+    handleSubmitComment,
+    handleDeleteComment,
+    handleEditComment,
+    textareaRef,
   } = useAssignment();
-
-  const fetchAssignment = useCallback(
-    async function (id: string | number) {
-      try {
-        const res = await ApiService.getAssignment(id);
-
-        if (isGetAssingmentResponse(res)) {
-          setAssignment(res.assignment);
-          setAssignmentEnum(res.assignmentEnum);
-          setAssignmentStatusEnum(res.assignmentStatusEnum);
-        }
-      } catch (error) {
-        console.warn(error);
-        setAssignment(undefined);
-        setAssignmentEnum(undefined);
-      }
-    },
-    [setAssignment, setAssignmentEnum, setAssignmentStatusEnum]
-  );
-  const updateAssignment = useCallback(
-    function (prop: keyof TAssignment, value: string) {
-      setAssignment(prev => ({ ...prev, [prop]: value } as TAssignment));
-    },
-    [setAssignment]
-  );
-
-  const persist = useCallback(
-    async function () {
-      try {
-        if (!assignmentId) return;
-        const response = await ApiService.saveAssignment(assignmentId, assignment);
-
-        setAssignment(response);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [assignment, assignmentId, setAssignment]
-  );
-
-  const save = useCallback(
-    async function (status: TAssignmentStatusValues) {
-      if (!assignmentStatusEnum) return;
-
-      if (assignment?.status !== status) {
-        updateAssignment('status', status);
-      } else {
-        persist();
-      }
-    },
-    [assignment?.status, assignmentStatusEnum, persist, updateAssignment]
-  );
-
-  useEffect(() => {
-    assignmentId && fetchAssignment(assignmentId);
-  }, [assignmentId, fetchAssignment]);
-
-  const prevAssignment = useRef(assignment);
-
-  useEffect(() => {
-    if (assignment?.status !== prevAssignment.current?.status) {
-      persist();
-    }
-    prevAssignment.current = assignment;
-  }, [assignment, persist]);
 
   return (
     <Container className='my-5 code-review-assignment-view'>
       <header className='d-flex flex-row justify-content-start gap-4 align-items-center flex-wrap '>
-        {selectedAssignment || assignment?.number ? (
-          <h2>Assignment #{selectedAssignment || assignment?.number}</h2>
-        ) : (
-          <></>
-        )}
+        {selectedAssignment || (assignment?.number && <h2>Assignment #{selectedAssignment || assignment?.number}</h2>)}
         <StatusBadge className='rounded-0' text={assignment?.status?.toUpperCase()} style={{ fontSize: '1rem' }} />
       </header>
 
@@ -176,6 +97,29 @@ const CodeReviewAssignmentView = () => {
           </Container>
         </Col>
       </div>
+      <Col sm='12' md='10' lg='8' className='pe-lg-2 pe-md-1 pe-sm-0 mt-5'>
+        <textarea
+          ref={textareaRef}
+          className={styled.textArea}
+          value={comment}
+          onChange={e => setComment(e.target.value)}
+        />
+        <div className='d-flex justify-content-end'>
+          <Button variant='dark' onClick={() => handleSubmitComment(editingComment)}>
+            {!editingComment ? 'Post Comment' : 'Update Comment'}
+          </Button>
+        </div>
+        <div className='comments-container mt-4'>
+          {comments.map(comment => (
+            <Comment
+              deleteComment={handleDeleteComment}
+              editComment={handleEditComment}
+              comment={comment}
+              key={comment.id}
+            />
+          ))}
+        </div>
+      </Col>
     </Container>
   );
 };
