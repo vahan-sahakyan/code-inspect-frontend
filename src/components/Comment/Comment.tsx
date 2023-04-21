@@ -29,49 +29,48 @@ const Comment: React.FC<TCommentProps> = ({
   return (
     <div
       className={css`
-        margin: 2rem 0;
+        /* padding: 1rem 0; */
       `}
     >
       <div
         className={css`
-          background: #0001;
-          border-radius: 0.15rem;
-          padding: 1rem;
+          border-top: 1px solid #0002;
+          border-radius: 0.25rem;
+          margin: 1rem;
         `}
       >
+        <span className='text-muted'>{text} - </span>
         <span
           className={css`
-            font-weight: bold;
-            margin-right: 0.5rem;
+            font-weight: normal;
+            color: var(--bs-primary);
           `}
         >
-          {createdBy.name}:
+          {createdBy.name}
         </span>
-        <span className='text-muted'>{text}</span>
-      </div>
-      <div className='d-flex align-items-center'>
         <span className='p-2 text-muted opacity-50'>
           {monthShort} {day}, {year} at {hour}:{String(minute).padStart(2, '0')}
         </span>
-        {createdBy.username === JSON.parse(localStorage.loginResponse).data.username && (
-          <div className='d-flex align-items-center'>
-            <Button
-              onClick={() => editComment(id)}
-              className='text-decoration-underline text-muted opacity-75'
-              variant='link'
-            >
-              Edit
-            </Button>
-            <Button
-              onClick={() => deleteComment(id)}
-              className='text-decoration-underline text-danger opacity-75'
-              variant='link'
-            >
-              Delete
-            </Button>
-          </div>
-        )}
       </div>
+      {createdBy.username === JSON.parse(localStorage.loginResponse).data.username && (
+        // <div className='d-flex align-items-center'>
+        <>
+          <Button
+            onClick={() => editComment(id)}
+            className='text-decoration-underline text-muted opacity-75'
+            variant='link'
+          >
+            Edit
+          </Button>
+          <Button
+            onClick={() => deleteComment(id)}
+            className='text-decoration-underline text-danger opacity-75'
+            variant='link'
+          >
+            Delete
+          </Button>
+        </>
+      )}
     </div>
   );
 };
