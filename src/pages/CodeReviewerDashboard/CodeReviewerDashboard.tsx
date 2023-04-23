@@ -97,7 +97,7 @@ const CodeReviewerDashboard = () => {
           {assignments?.filter(a => ['Submitted', 'Resubmitted'].includes(a.status)).length ? (
             assignments
               .filter(a => ['Submitted', 'Resubmitted'].includes(a.status))
-              .sort((a, b) => (a.status === 'Resubmitted' ? -1 : 1))
+              .sort(a => (a.status === 'Resubmitted' ? -1 : 1))
               .map(item => <AssignmentRecord key={item.id} assignment={item} claimAssignment={claimAssignment} />)
           ) : (
             <div>No Assignments Found</div>

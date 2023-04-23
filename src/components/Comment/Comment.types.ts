@@ -22,6 +22,7 @@ export type TComment = {
   text: string;
 };
 
+/* eslint-disable no-unused-vars */
 export type TCommentProps = {
   comment: TComment;
   deleteComment: (id: number) => void;

@@ -8,6 +8,7 @@ import StatusBadge from '../StatusBadge/StatusBadge';
 
 type TAssignmentRecordProps<T> = {
   assignment: T;
+  // eslint-disable-next-line no-unused-vars
   claimAssignment?: (assignment: T) => Promise<void>;
 };
 export default function AssignmentRecord({ assignment, claimAssignment }: TAssignmentRecordProps<TAssignment>) {
