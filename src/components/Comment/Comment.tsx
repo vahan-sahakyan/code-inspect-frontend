@@ -1,32 +1,31 @@
 import { css } from '@emotion/css';
-import React from 'react';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
-import { TComment } from '../../hooks/useAssignment';
+import { useInterval } from '../../hooks';
+import { TCommentProps } from './Comment.types';
 
-type TCommentProps = {
-  comment: TComment;
-  deleteComment: (id: number) => void;
-  editComment: (id: number) => void;
-};
-
-// prettier-ignore
-export const MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-export const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+dayjs.extend(relativeTime);
 
 const Comment: React.FC<TCommentProps> = ({
   comment: { createdBy, createdDate, text, id },
   deleteComment,
   editComment,
 }) => {
-  const date = new Date(createdDate);
+  const [postedDate, setPostedDate] = useState<string>(dayjs(createdDate).fromNow());
 
-  const year = date.getFullYear();
-  // const monthLong = MONTHS_LONG[date.getMonth()];
-  const monthShort = MONTHS_SHORT[date.getMonth()];
-  const day = date.getDate();
-  const hour = date.getHours();
-  const minute = date.getMinutes();
+  const updatePostedDate = useCallback(() => {
+    setPostedDate(dayjs(createdDate).fromNow());
+  }, [createdDate]);
+
+  useInterval(updatePostedDate, 61_000);
+
+  useEffect(() => {
+    updatePostedDate();
+  }, [createdDate, updatePostedDate]);
+
   return (
     <div
       className={css`
@@ -51,9 +50,7 @@ const Comment: React.FC<TCommentProps> = ({
         <span className='text-muted'>{text}</span>
       </div>
       <div className='d-flex align-items-center'>
-        <span className='p-2 text-muted opacity-50'>
-          {monthShort} {day}, {year} at {hour}:{String(minute).padStart(2, '0')}
-        </span>
+        <span className='p-2 text-muted opacity-50'>Posted {postedDate}</span>
         {createdBy.username === JSON.parse(localStorage.loginResponse).data.username && (
           <div className='d-flex align-items-center'>
             <Button

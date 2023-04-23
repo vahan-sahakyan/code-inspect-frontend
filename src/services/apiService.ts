@@ -1,6 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
 
-import { TCommentRequest } from '../hooks/useAssignment';
+import { TCommentRequest } from '../components/Comment/Comment.types';
 import { TAssignment } from '../pages/Dashboard/Dashboard';
 import instance from './axios';
 

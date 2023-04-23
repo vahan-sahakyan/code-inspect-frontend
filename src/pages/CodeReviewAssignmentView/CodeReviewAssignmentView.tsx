@@ -4,27 +4,13 @@ import { ChangeEvent } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 import { ReactComponent as CopySVG } from '../../../public/copy.svg';
-import { Comment } from '../../components';
-import StatusBadge from '../../components/StatusBadge/StatusBadge';
+import { StatusBadge } from '../../components';
+import { CommentContainer } from '../../containers';
 import { useAssignment } from '../../hooks';
 import { styled } from '../CodeReviewerDashboard/CodeReviewerDashboard.styles';
 
 const CodeReviewAssignmentView = () => {
-  const {
-    assignment,
-    selectedAssignment,
-    save,
-    updateAssignment,
-    navigate,
-    comment,
-    setComment,
-    comments,
-    editingComment,
-    handleSubmitComment,
-    handleDeleteComment,
-    handleEditComment,
-    textareaRef,
-  } = useAssignment();
+  const { assignment, selectedAssignment, save, updateAssignment, navigate } = useAssignment();
 
   return (
     <Container className='my-5 code-review-assignment-view'>
@@ -97,29 +83,7 @@ const CodeReviewAssignmentView = () => {
           </Container>
         </Col>
       </div>
-      <Col sm='12' md='10' lg='8' className='pe-lg-2 pe-md-1 pe-sm-0 mt-5'>
-        <textarea
-          ref={textareaRef}
-          className={styled.textArea}
-          value={comment}
-          onChange={e => setComment(e.target.value)}
-        />
-        <div className='d-flex justify-content-end'>
-          <Button variant='dark' onClick={() => handleSubmitComment(editingComment)}>
-            {!editingComment ? 'Post Comment' : 'Update Comment'}
-          </Button>
-        </div>
-        <div className='comments-container mt-4'>
-          {comments.map(comment => (
-            <Comment
-              deleteComment={handleDeleteComment}
-              editComment={handleEditComment}
-              comment={comment}
-              key={comment.id}
-            />
-          ))}
-        </div>
-      </Col>
+      <CommentContainer />
     </Container>
   );
 };

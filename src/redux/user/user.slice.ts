@@ -1,18 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type UserInitialState = {
+interface IUserInitialState {
   isLoading: boolean;
   error: string | null;
   userRole: string;
-};
+}
+
+const userInitialState: IUserInitialState = {
+  isLoading: false,
+  error: null,
+  userRole: '',
+} as const;
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    isLoading: false,
-    error: null,
-    userRole: '',
-  } as UserInitialState,
+  initialState: userInitialState,
   reducers: {
     setUserRole: (state, action: PayloadAction<string>) => {
       state.userRole = action.payload;
