@@ -5,10 +5,10 @@ import { Button, Container, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { TDecodedJwt } from '../../App';
 import { useLocalState } from '../../hooks';
 import { setUserRole } from '../../redux/user/user.slice';
 import { instance } from '../../services';
+import { TDecodedJwt } from '../../shared/types';
 const { Group, Control } = Form;
 
 export type TUser = {

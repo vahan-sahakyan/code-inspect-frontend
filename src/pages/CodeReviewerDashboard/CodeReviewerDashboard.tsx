@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-import { TDecodedJwt } from '../../App';
 import { AssignmentRecord } from '../../components';
 import { useLocalState } from '../../hooks';
 import { ApiService } from '../../services';
+import { TDecodedJwt } from '../../shared/types';
 import { TAssignment } from '../Dashboard/Dashboard';
 import { styles } from './CodeReviewerDashboard.styles';
 

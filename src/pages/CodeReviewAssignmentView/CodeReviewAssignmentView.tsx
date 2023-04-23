@@ -1,5 +1,3 @@
-import './CodeReviewAssignmentView.scss';
-
 import { ChangeEvent } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 

@@ -1,5 +1,3 @@
-import './AssignmentView.scss';
-
 import { ChangeEvent } from 'react';
 import { Button, ButtonGroup, Col, Container, DropdownButton, Form, Row } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';

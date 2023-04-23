@@ -1,7 +1,7 @@
 import jwtDecode from 'jwt-decode';
 import { useEffect, useMemo, useState } from 'react';
 
-import { TDecodedJwt, TRole } from '../App';
+import { TDecodedJwt, TRole } from '../shared/types';
 import useLocalState from './useLocalStorage';
 const useRoles = () => {
   const [jwt] = useLocalState('', 'jwt');

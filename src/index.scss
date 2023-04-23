@@ -149,6 +149,7 @@ textarea {
   border: 1.4px solid black !important;
 }
 button {
+  border-radius: 0px !important;
   cursor: pointer;
   transition: all 0.14s ease-out 0s !important;
   &:focus-visible:active {
