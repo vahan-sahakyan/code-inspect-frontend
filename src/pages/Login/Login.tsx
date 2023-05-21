@@ -51,8 +51,10 @@ const Login = () => {
 
   async function sendLoginRequest(e: FormEvent, easyUser?: Pick<TUser, 'password' | 'username'>) {
     e.preventDefault();
-    setIsValidationPhase(true);
-    checkErrors();
+    if (!easyUser) {
+      setIsValidationPhase(true);
+      checkErrors();
+    }
     if (jwt) return;
     if ((errorFields || []).some(n => !!n) && !easyUser) return;
     try {
