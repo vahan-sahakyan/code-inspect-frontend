@@ -27,5 +27,20 @@
   "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "liveServer.settings.root": "/out",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "xprotocol"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "localhost",
+      "username": "root",
+      "database": "code_inspect_db",
+      "connectionTimeout": 360
+    }
+  ]
 }

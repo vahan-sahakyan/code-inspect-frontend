@@ -2,10 +2,11 @@ import './Dashboard.scss';
 
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import { AssignmentRecord } from '../../components';
+import { useUser } from '../../hooks';
 import { ApiService } from '../../services';
 import { TAssignmentStatusValues } from '../../services/apiService';
 import { TUser } from '../Login/Login';
@@ -59,6 +60,7 @@ const Dashboard = () => {
   function handleGoBack() {
     navigate('/');
   }
+  const { displayName } = useUser();
 
   return (
     <div className='dashboard'>
@@ -80,14 +82,14 @@ const Dashboard = () => {
           </Button>
         </div>
 
-        <Button
-          variant='link'
-          style={{ cursor: 'pointer' }}
-          onClick={handleLogout}
-          className='text-black text-decoration-underline'
-        >
-          Logout
-        </Button>
+        <Container role='cell' className='text-muted w-auto d-flex gap-4 m-0'>
+          <p style={{ whiteSpace: 'nowrap' }} className='text-muted'>
+            Hi {displayName} 👋
+          </p>
+          <Container role='button' onClick={handleLogout} className='text-black text-decoration-underline'>
+            Logout
+          </Container>
+        </Container>
       </header>
       <h2 className='w-75 m-auto m-5 my-0'>Student Dashboard</h2>
       <div className='assignment-wrapper needs-update  mt-5 px-2 w-75 m-auto rounded-0'>

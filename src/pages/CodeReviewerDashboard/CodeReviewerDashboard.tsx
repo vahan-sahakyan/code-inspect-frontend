@@ -2,11 +2,11 @@ import './CodeReviewerDashboard.scss';
 
 import jwtDecode from 'jwt-decode';
 import { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import { AssignmentRecord } from '../../components';
-import { useLocalState } from '../../hooks';
+import { useLocalState, useUser } from '../../hooks';
 import { ApiService } from '../../services';
 import { TDecodedJwt } from '../../shared/types';
 import { TAssignment } from '../Dashboard/Dashboard';
@@ -51,6 +51,7 @@ const CodeReviewerDashboard = () => {
   useEffect(() => {
     fetchAssignments();
   }, []);
+  const { role, id, displayName, username } = useUser();
 
   return (
     <div className='code-reviewer-dashboard '>
@@ -65,14 +66,14 @@ const CodeReviewerDashboard = () => {
             ◂ Go Back
           </Button>
         </div>
-        <Button
-          variant='link'
-          style={{ cursor: 'pointer' }}
-          onClick={handleLogout}
-          className='text-black text-decoration-underline'
-        >
-          Logout
-        </Button>
+        <Container role='cell' className='text-muted w-auto d-flex gap-4 m-0'>
+          <p style={{ whiteSpace: 'nowrap' }} className='text-muted'>
+            Hi {displayName} 👋
+          </p>
+          <Container role='button' onClick={handleLogout} className='text-black text-decoration-underline'>
+            Logout
+          </Container>
+        </Container>
       </header>
       <h2 className='w-75 m-auto m-5 my-0'>Code Reviewer Dashboard</h2>
       <div className='assignment-wrapper in-review mt-5 px-2 w-75 m-auto rounded-0'>
