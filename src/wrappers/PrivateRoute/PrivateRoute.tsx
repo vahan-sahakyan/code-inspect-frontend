@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useLayoutEffect, useRef } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 import { useLocalState } from '../../hooks';
@@ -29,7 +29,7 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
     [jwt, navigate, setJwt]
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     validate();
   }, [validate]);
 
