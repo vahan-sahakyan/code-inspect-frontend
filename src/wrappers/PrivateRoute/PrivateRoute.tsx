@@ -4,7 +4,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { useLocalState } from '../../hooks';
 import { instance } from '../../services';
 
-const PrivateRoute = ({ children }: { children: JSX.Element }) => {
+const PrivateRoute = ({ component }: { component: JSX.Element }) => {
   const [jwt, setJwt] = useLocalState<string>('', 'jwt');
   const isValid = useRef(false);
   const navigate = useNavigate();
@@ -33,6 +33,6 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
     validate();
   }, [validate]);
 
-  return isValid ? children : <Navigate to='/login' />;
+  return isValid ? component : <Navigate to='/login' />;
 };
 export default PrivateRoute;

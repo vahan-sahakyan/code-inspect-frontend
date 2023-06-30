@@ -28,7 +28,7 @@ export type TGetAssingmentResponse = {
   assignmentStatusEnum: TAssignmentStatusEnum[];
 };
 
-abstract class ApiService {
+export default abstract class ApiService {
   static getJwt = () => JSON.parse(localStorage.getItem('jwt') || '');
 
   static getAssignments = async () => {
@@ -129,5 +129,3 @@ abstract class ApiService {
     }
   };
 }
-
-export default ApiService;

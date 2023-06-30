@@ -7,7 +7,7 @@ import ApiService, {
   TAssignmentStatusEnum,
   TAssignmentStatusValues,
   TGetAssingmentResponse,
-} from '../services/apiService';
+} from '../services/ApiService';
 
 function isGetAssingmentResponse(res: unknown): res is TGetAssingmentResponse {
   return (

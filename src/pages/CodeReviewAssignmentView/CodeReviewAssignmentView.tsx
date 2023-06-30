@@ -7,7 +7,7 @@ import { CommentContainer } from '../../containers';
 import { useAssignment } from '../../hooks';
 import { styled } from '../CodeReviewerDashboard/CodeReviewerDashboard.styles';
 
-const CodeReviewAssignmentView = () => {
+export default function () {
   const { assignment, selectedAssignment, save, updateAssignment, navigate } = useAssignment();
 
   return (
@@ -84,6 +84,4 @@ const CodeReviewAssignmentView = () => {
       <CommentContainer />
     </Container>
   );
-};
-
-export default CodeReviewAssignmentView;
+}
