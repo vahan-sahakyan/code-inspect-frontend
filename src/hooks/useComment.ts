@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { TComment } from '../components/Comment/Comment.types';
-import ApiService from '../services/ApiService';
+import ApiService from '../services/apiService';
 import useLocalState from './useLocalStorage';
 
 export default function useComment() {

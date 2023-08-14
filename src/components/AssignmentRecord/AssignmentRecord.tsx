@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useRoles } from '../../hooks';
 import { TAssignment } from '../../pages/Dashboard/Dashboard';
-import { TAssignmentStatusValues } from '../../services/ApiService';
+import { TAssignmentStatusValues } from '../../services/apiService';
 import StatusBadge from '../StatusBadge/StatusBadge';
 
 type TAssignmentRecordProps<T> = {

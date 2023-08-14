@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { AssignmentRecord } from '../../components';
 import { useUser } from '../../hooks';
 import { ApiService } from '../../services';
-import { TAssignmentStatusValues } from '../../services/ApiService';
+import { TAssignmentStatusValues } from '../../services/apiService';
 import { TUser } from '../Login/Login';
 import { styles } from './Dashboard.styles';
 
