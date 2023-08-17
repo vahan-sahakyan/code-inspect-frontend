@@ -8,5 +8,5 @@ RUN npm i --legacy-peer-deps
 
 COPY . .
 
-CMD ["npx", "vite"]
+CMD ["npm", "run", "prod"]
 

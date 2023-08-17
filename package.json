@@ -7,10 +7,11 @@
     "dev": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview --host",
+    "prod": "npm i --legacy-peer-deps && npx vite build && npx vite preview --port 5173 && rm -rf ./node_modules",
     "tsc": "tsc -p . --noEmit",
     "lint": "eslint --fix . && stylelint --fix \"src/**/*.(css|scss)\"",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
-    "clean": "npx rimraf ./build .eslintcache .stylelintcache",
+    "clean": "npx rimraf ./dist .eslintcache .stylelintcache",
     "prepare": "husky install"
   },
   "dependencies": {
