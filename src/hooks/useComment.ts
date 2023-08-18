@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { socket } from '../App';
 import { TComment } from '../components/Comment/Comment.types';
 import ApiService from '../services/apiService';
+import { TKafkaTopic } from '../shared/types';
 import useLocalState from './useLocalStorage';
+import useMount from './useMount';
+import useUnMount from './useUnMount';
 
 export default function useComment() {
   const [comment, setComment] = useState('');
@@ -27,6 +31,17 @@ export default function useComment() {
     },
     [assignmentId]
   );
+
+  const commentMessageHandler = (event: { data: string }) => {
+    const { value } = JSON.parse(event.data) as TKafkaTopic;
+    if (value.includes('CREATE COMMENT') || value.includes('DELETE COMMENT')) fetchComments();
+  };
+  useMount(() => {
+    socket.addEventListener('message', commentMessageHandler);
+  });
+  useUnMount(() => {
+    socket.removeEventListener('message', commentMessageHandler);
+  });
 
   const handleSubmitComment = useCallback(
     async function (passedComment?: TComment) {

@@ -7,8 +7,11 @@ import { AssignmentView, CodeReviewAssignmentView, CodeReviewerDashboard, Dashbo
 import { selectIsCodeReviewer } from './redux/selectors';
 import { PrivateRoute } from './wrappers';
 
+export const socket = new WebSocket(`ws://${location.hostname}:7078`);
+
 export default function () {
   const isCodeReviewer = useSelector(selectIsCodeReviewer);
+
   return (
     <Routes>
       <Route

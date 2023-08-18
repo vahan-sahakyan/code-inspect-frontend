@@ -7,3 +7,12 @@ export type TDecodedJwt = {
   sub: string;
   authorities: Array<TRole>;
 };
+
+export type TKafkaTopic = {
+  highWaterOffset: number;
+  key: number;
+  offset: number;
+  partition: number;
+  topic: string;
+  value: string;
+};

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { socket } from '../App';
 import { TAssignment } from '../pages/Dashboard/Dashboard';
 import ApiService, {
   TAssignmentEnum,
@@ -8,6 +9,9 @@ import ApiService, {
   TAssignmentStatusValues,
   TGetAssingmentResponse,
 } from '../services/apiService';
+import { TKafkaTopic } from '../shared/types';
+import useMount from './useMount';
+import useUnMount from './useUnMount';
 
 function isGetAssingmentResponse(res: unknown): res is TGetAssingmentResponse {
   return (
@@ -87,11 +91,21 @@ export default function useAssignment() {
 
   useEffect(() => {
     if (assignment?.status !== prevAssignment.current?.status) {
-      persist();
+      prevAssignment.current?.status && persist();
     }
     prevAssignment.current = assignment;
   }, [assignment, persist]);
 
+  const assignmentMessageHandler = (event: { data: string }) => {
+    const { value } = JSON.parse(event.data) as TKafkaTopic;
+    if (value.includes('CREATE ASSIGNMENT') || value.includes('UPDATE ASSIGNMENT')) fetchAssignment(assignmentId);
+  };
+  useMount(() => {
+    socket.addEventListener('message', assignmentMessageHandler);
+  });
+  useUnMount(() => {
+    socket.removeEventListener('message', assignmentMessageHandler);
+  });
   return {
     assignment,
     setAssignment,

@@ -5,10 +5,12 @@ import { useEffect, useState } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+import { socket } from '../../App';
 import { AssignmentRecord } from '../../components';
-import { useLocalState, useUser } from '../../hooks';
+import { useLocalState, useMount, useUser } from '../../hooks';
+import useUnMount from '../../hooks/useUnMount';
 import { ApiService } from '../../services';
-import { TDecodedJwt } from '../../shared/types';
+import { TDecodedJwt, TKafkaTopic } from '../../shared/types';
 import { TAssignment } from '../Dashboard/Dashboard';
 import { styles } from './CodeReviewerDashboard.styles';
 
@@ -51,7 +53,18 @@ const CodeReviewerDashboard = () => {
   useEffect(() => {
     fetchAssignments();
   }, []);
-  const { role, id, displayName, username } = useUser();
+  const { displayName } = useUser();
+
+  const codeReviewerDashboardMessageHandler = (event: { data: string }) => {
+    const { value } = JSON.parse(event.data) as TKafkaTopic;
+    if (value.includes('CREATE ASSIGNMENT') || value.includes('UPDATE ASSIGNMENT')) fetchAssignments();
+  };
+  useMount(() => {
+    socket.addEventListener('message', codeReviewerDashboardMessageHandler);
+  });
+  useUnMount(() => {
+    socket.removeEventListener('message', codeReviewerDashboardMessageHandler);
+  });
 
   return (
     <div className='code-reviewer-dashboard '>

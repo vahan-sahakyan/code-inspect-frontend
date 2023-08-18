@@ -5,10 +5,13 @@ import { useEffect, useState } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+import { socket } from '../../App';
 import { AssignmentRecord } from '../../components';
-import { useUser } from '../../hooks';
+import { useMount, useUser } from '../../hooks';
+import useUnMount from '../../hooks/useUnMount';
 import { ApiService } from '../../services';
 import { TAssignmentStatusValues } from '../../services/apiService';
+import { TKafkaTopic } from '../../shared/types';
 import { TUser } from '../Login/Login';
 import { styles } from './Dashboard.styles';
 
@@ -62,6 +65,16 @@ const Dashboard = () => {
   }
   const { displayName } = useUser();
 
+  const dashboardMessageHandler = (event: { data: string }) => {
+    const { value } = JSON.parse(event.data) as TKafkaTopic;
+    if (value.includes('CREATE ASSIGNMENT') || value.includes('UPDATE ASSIGNMENT')) fetchAssignments();
+  };
+  useMount(() => {
+    socket.addEventListener('message', dashboardMessageHandler);
+  });
+  useUnMount(() => {
+    socket.removeEventListener('message', dashboardMessageHandler);
+  });
   return (
     <div className='dashboard'>
       <header className='mx-5 d-flex align-items-center justify-content-between'>
