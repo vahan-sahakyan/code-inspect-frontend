@@ -13,7 +13,12 @@
     />
     <!-- END OF FONTS -->
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" id="viewport" />
+
+    <script type="text/javascript">
+      const initialScale = screen.width < 640 && (window.orientation == 0 || window.orientation == 180) ? 0.75 : 1;
+      document.getElementById('viewport').setAttribute('content', `width=device-width, initial-scale=${initialScale}`);
+    </script>
     <title>Code Inspect</title>
   </head>
   <body>
