@@ -124,7 +124,7 @@ const Login = () => {
               required
               placeholder='Display Name'
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setDisplayName(e.target.value);
+                setDisplayName(e.target.value?.trim?.());
                 setIsValidationPhase(false);
               }}
               className={`rounded-0 ${isRed('name')}`}
@@ -138,7 +138,7 @@ const Login = () => {
             required
             placeholder='Email or Username'
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              setUsername(e.target.value);
+              setUsername(e.target.value?.trim?.());
               setIsValidationPhase(false);
             }}
             className={`rounded-0 ${isRed('username')}`}
