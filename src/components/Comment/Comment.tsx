@@ -4,7 +4,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
-import { useInterval } from '../../hooks';
+import { useInterval, useUser } from '../../hooks';
 import { TCommentProps } from './Comment.types';
 
 dayjs.extend(relativeTime);
@@ -14,7 +14,10 @@ const Comment: React.FC<TCommentProps> = ({
   deleteComment,
   editComment,
 }) => {
+  const { username } = useUser();
   const [postedDate, setPostedDate] = useState<string>(dayjs(createdDate).fromNow());
+  const isMe = username === createdBy.username;
+  const isRecentIncomingComment = postedDate.includes('a few seconds ago') && !isMe;
 
   const updatePostedDate = useCallback(() => {
     setPostedDate(dayjs(createdDate).add(4, 'h').fromNow());
@@ -34,9 +37,11 @@ const Comment: React.FC<TCommentProps> = ({
     >
       <div
         className={css`
-          background: #0001;
+          background: ${!isMe ? '#0001' : '#86d1db4a'};
           border-radius: 0.15rem;
           padding: 1rem;
+          border: 1px solid #bbb;
+          ${isRecentIncomingComment && 'outline: 4px solid #ffc00877;'}
         `}
       >
         <span
@@ -45,7 +50,7 @@ const Comment: React.FC<TCommentProps> = ({
             margin-right: 0.5rem;
           `}
         >
-          {createdBy.name}:
+          {!isMe ? createdBy.name : 'Me'}:
         </span>
         <span className='text-muted'>{text}</span>
       </div>
