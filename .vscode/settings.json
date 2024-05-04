@@ -16,9 +16,8 @@
   "scss.validate": false,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.fixAll.stylelint": true,
-    "source.sortImports": true
+    "source.fixAll.eslint": "always",
+    "source.fixAll.stylelint": "always"
   },
   "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "[javascriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },

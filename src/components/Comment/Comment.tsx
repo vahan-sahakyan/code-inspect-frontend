@@ -38,6 +38,7 @@ const Comment: React.FC<TCommentProps> = ({
       <div
         className={css`
           background: ${!isMe ? '#0001' : '#86d1db4a'};
+          ${isRecentIncomingComment && 'background: #ffc0082a;'}
           border-radius: 0.15rem;
           padding: 1rem;
           border: 1px solid #bbb;
