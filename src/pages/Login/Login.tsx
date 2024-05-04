@@ -1,6 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import jwtDecode from 'jwt-decode';
-import { ChangeEvent, FormEvent, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -81,7 +81,6 @@ const Login = () => {
       await sendLoginRequest(e);
     } catch (error) {
       setLoginResponse(error as AxiosError);
-      let foo: SetStateAction<AxiosResponse<TUser, any>>;
       localStorage.removeItem('jwt');
       console.error('🔴 Invalid login attempt!');
     }
