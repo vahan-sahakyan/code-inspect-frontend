@@ -88,7 +88,7 @@ const CodeReviewerDashboard = () => {
           </Container>
         </Container>
       </header>
-      <h2 className='w-75 m-auto m-5 my-0'>Code Reviewer Dashboard</h2>
+      <h2 className='w-75 m-auto m-5 my-0 text-center '>Code Reviewer&apos;s Dashboard</h2>
       <div className='assignment-wrapper in-review mt-5 px-2 w-75 m-auto rounded-0'>
         <div className='h5 text-black px-3 bg-white' style={styles.wrapperTitle}>
           In Review
@@ -126,6 +126,20 @@ const CodeReviewerDashboard = () => {
           {assignments?.filter(a => a.status === 'Needs Update').length ? (
             assignments
               .filter(a => a.status === 'Needs Update')
+              .map(item => <AssignmentRecord key={item.id} assignment={item} claimAssignment={claimAssignment} />)
+          ) : (
+            <div>No Assignments Found</div>
+          )}
+        </div>
+      </div>
+      <div className='assignment-wrapper needs-update  mt-5 px-2 w-75 m-auto rounded-0'>
+        <div className='h5 text-black px-3 bg-white' style={styles.wrapperTitle}>
+          Completed
+        </div>
+        <div className='d-grid gap-4 p-4 justify-content-center align-content-center' style={styles.assignmentsGrid}>
+          {assignments?.filter(a => a.status === 'Completed').length ? (
+            assignments
+              .filter(a => a.status === 'Completed')
               .map(item => <AssignmentRecord key={item.id} assignment={item} claimAssignment={claimAssignment} />)
           ) : (
             <div>No Assignments Found</div>

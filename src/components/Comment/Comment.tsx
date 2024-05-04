@@ -17,7 +17,7 @@ const Comment: React.FC<TCommentProps> = ({
   const [postedDate, setPostedDate] = useState<string>(dayjs(createdDate).fromNow());
 
   const updatePostedDate = useCallback(() => {
-    setPostedDate(dayjs(createdDate).fromNow());
+    setPostedDate(dayjs(createdDate).add(4, 'h').fromNow());
   }, [createdDate]);
 
   useInterval(updatePostedDate, 61_000);

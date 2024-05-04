@@ -104,10 +104,10 @@ const Dashboard = () => {
           </Container>
         </Container>
       </header>
-      <h2 className='w-75 m-auto m-5 my-0'>Student Dashboard</h2>
+      <h2 className='w-75 m-auto m-5 my-0 text-center '>Student&apos;s Dashboard</h2>
       <div className='assignment-wrapper needs-update  mt-5 px-2 w-75 m-auto rounded-0'>
         <div className='h5 text-black px-3 bg-white' style={styles.wrapperTitle}>
-          My Stuff
+          My Work
         </div>
         <div className='d-grid gap-4 m-4  justify-content-center align-content-center' style={styles.assignmentsGrid}>
           {assignments &&

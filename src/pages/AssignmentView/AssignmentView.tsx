@@ -22,7 +22,7 @@ const AssignmentView = () => {
   return (
     <Container className='my-5 assignment-view'>
       <header className='d-flex flex-row justify-content-start gap-4 align-items-center flex-wrap '>
-        {selectedAssignment || (assignment?.number && <h2>Assignment #{selectedAssignment || assignment?.number}</h2>)}
+        {(selectedAssignment || assignment?.number) && <h2>Assignment #{selectedAssignment || assignment?.number}</h2>}
         <StatusBadge className='rounded-0' text={assignment?.status?.toUpperCase()} style={{ fontSize: '1rem' }} />
       </header>
 
@@ -35,9 +35,9 @@ const AssignmentView = () => {
             variant={isAssignmentCompleted ? 'outline-secondary' : 'dark'}
             as={ButtonGroup}
             title={
-              selectedAssignment || assignment?.number
-                ? `Assignment #${selectedAssignment || assignment?.number}`
-                : 'Select an Assignment'
+              !selectedAssignment && !assignment?.number
+                ? 'Select an Assignment'
+                : `Assignment #${selectedAssignment || assignment?.number}`
             }
             onSelect={(eventKey: string | null) => {
               if (!eventKey) return;

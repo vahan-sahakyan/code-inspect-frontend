@@ -21,11 +21,6 @@ const userSlice = createSlice({
       localStorage.setItem('userRole', action.payload);
     },
   },
-  extraReducers(builder) {
-    builder.addCase('', () => {
-      //
-    });
-  },
 });
 export const { setUserRole } = userSlice.actions;
 
