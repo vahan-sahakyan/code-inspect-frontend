@@ -37,27 +37,39 @@ const Comment: React.FC<TCommentProps> = ({
     >
       <div
         className={css`
-          background: ${!isMe ? '#0001' : '#86d1db4a'};
+          background: ${!isMe ? '#eee' : '#e4eaf6'};
           ${isRecentIncomingComment && 'background: #ffc0082a;'}
           border-radius: 0.15rem;
           padding: 1rem;
-          border: 1px solid #bbb;
+          border: 1px solid ${!isMe ? '#bbb' : '#a2c0ff'};
           ${isRecentIncomingComment && 'outline: 4px solid #ffc00877;'}
         `}
       >
-        <span
-          className={css`
-            font-weight: bold;
-            margin-right: 0.5rem;
-          `}
-        >
-          {!isMe ? createdBy.name : 'You'}:
-        </span>
-        <span className='text-muted'>{text}</span>
+        <div className='d-flex align-items-start'>
+          <img
+            src='/public/user.png'
+            alt='user'
+            className='me-3'
+            style={{ width: '2rem', borderRadius: '50%', border: '1px solid #0003' }}
+          />
+          <div className='d-flex flex-column'>
+            <span
+              className={css`
+                font-weight: bold;
+                margin-right: 0.5rem;
+              `}
+            >
+              {!isMe ? createdBy.name : 'You'}
+              <span className='p-2 text-muted opacity-50 fw-normal'>{postedDate}</span>
+            </span>
+            <span className='text-muted'>
+              {text.trim() || <pre className='text-success  opacity-50'>Empty comment. Edit or delete it</pre>}
+            </span>
+          </div>
+        </div>
       </div>
       <div className='d-flex align-items-center'>
-        <span className='p-2 text-muted opacity-50'>Posted {postedDate}</span>
-        {createdBy.username === JSON.parse(localStorage.loginResponse).data.username && (
+        {createdBy.username === JSON.parse(localStorage.loginResponse).data.username ? (
           <div className='d-flex align-items-center'>
             <Button
               onClick={() => editComment(id)}
@@ -74,6 +86,8 @@ const Comment: React.FC<TCommentProps> = ({
               Delete
             </Button>
           </div>
+        ) : (
+          <span className='py-2 text-muted opacity-50'></span>
         )}
       </div>
     </div>
