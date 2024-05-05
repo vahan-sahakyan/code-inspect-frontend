@@ -51,7 +51,7 @@ const Comment: React.FC<TCommentProps> = ({
             margin-right: 0.5rem;
           `}
         >
-          {!isMe ? createdBy.name : 'Me'}:
+          {!isMe ? createdBy.name : 'You'}:
         </span>
         <span className='text-muted'>{text}</span>
       </div>
