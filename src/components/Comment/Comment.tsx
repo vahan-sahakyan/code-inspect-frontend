@@ -47,7 +47,7 @@ const Comment: React.FC<TCommentProps> = ({
       >
         <div className='d-flex align-items-start'>
           <img
-            src='/public/user.png'
+            src='/user.png'
             alt='user'
             className='me-3'
             style={{ width: '2rem', borderRadius: '50%', border: '1px solid #0003' }}
