@@ -63,7 +63,7 @@ const Comment: React.FC<TCommentProps> = ({
               <span className='p-2 text-muted opacity-50 fw-normal'>{postedDate}</span>
             </span>
             <span className='text-muted'>
-              {text.trim() || <pre className='text-success  opacity-50'>Empty comment. Edit or delete it</pre>}
+              {text.trim() || <pre className='text-muted opacity-25'>Empty Comment</pre>}
             </span>
           </div>
         </div>
