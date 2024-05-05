@@ -1,10 +1,8 @@
 {
   "recommendations": [
     "dbaeumer.vscode-eslint",
-    "visualstudioexptteam.vscodeintellicode",
     "stylelint.vscode-stylelint",
     "esbenp.prettier-vscode",
     "ritwickdey.liveserver",
-    "firsttris.vscode-jest-runner"
   ]
 }
