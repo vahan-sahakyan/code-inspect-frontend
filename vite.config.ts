@@ -26,15 +26,15 @@ export default defineConfig({
       },
     }),
   ],
-  server: {
-    host: getLocalIP(),
-    strictPort: true,
-    port: 5173,
-    proxy: {
-      '/api': {
-        target: `http://${getLocalIP()}:8080`,
-        changeOrigin: true,
-      },
-    },
-  },
+  // server: {
+  //   host: getLocalIP(),
+  //   strictPort: true,
+  //   port: 5173,
+  //   // proxy: {
+  //   //   '/api': {
+  //   //     target: `http://${getLocalIP()}:8080`,
+  //   //     changeOrigin: true,
+  //   //   },
+  //   // },
+  // },
 });

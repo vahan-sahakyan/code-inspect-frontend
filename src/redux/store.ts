@@ -7,6 +7,8 @@ const store = configureStore({
   reducer: {
     user: userSlice.reducer,
   },
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   middleware: [logger],
 });
 

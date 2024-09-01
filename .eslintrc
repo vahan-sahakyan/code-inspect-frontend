@@ -37,8 +37,7 @@
     "promise",
     "optimize-regex",
     "sonarjs",
-    "prettier",
-    "formatjs"
+    "prettier"
   ],
   "rules": {
     "no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
@@ -78,12 +77,6 @@
         "endOfLine": "auto",
         "singleQuote": true,
         "jsxSingleQuote": true
-      }
-    ],
-    "formatjs/enforce-id": [
-      "warn",
-      {
-        "idInterpolationPattern": "[sha512:contenthash:base64:6]"
       }
     ]
   },

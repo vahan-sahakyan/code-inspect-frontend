@@ -4,7 +4,7 @@ export default function useInterval(cb: () => void, delay?: number) {
   const savedCallback = useRef(cb);
   useEffect(() => {
     if (delay !== undefined) {
-      const id: NodeJS.Timer = setInterval(savedCallback.current, delay);
+      const id: NodeJS.Timeout = setInterval(savedCallback.current, delay);
       return () => clearInterval(id);
     }
   }, [delay]);

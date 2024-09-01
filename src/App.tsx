@@ -7,7 +7,16 @@ import { AssignmentView, CodeReviewAssignmentView, CodeReviewerDashboard, Dashbo
 import { selectIsCodeReviewer } from './redux/selectors';
 import { PrivateRoute } from './wrappers';
 
-export const socket = new WebSocket(`ws://${location.hostname}:7078`);
+/////////////////////////////////////////////////////////
+const VITE_WS_URL =
+  (import.meta.env.VITE_WS_URL && `ws://${import.meta.env.VITE_WS_URL}`) || `ws://${location.hostname}`;
+const VITE_WS_PORT = import.meta.env.VITE_WS_PORT || '7078';
+
+const wsUrl = `${VITE_WS_URL}:${VITE_WS_PORT}`;
+console.log('wsUrl', wsUrl);
+console.log({ VITE_WS_URL, VITE_WS_PORT });
+
+export const socket = new WebSocket(wsUrl);
 
 export default function () {
   const isCodeReviewer = useSelector(selectIsCodeReviewer);

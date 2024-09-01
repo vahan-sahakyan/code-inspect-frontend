@@ -1,6 +1,8 @@
 import { FormEvent } from 'react';
 import { Container } from 'react-bootstrap';
 
+import { TUser } from '../../pages/Login/Login';
+
 export default function EasyLoginSection({
   sendLoginRequest,
 }: {
