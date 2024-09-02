@@ -8,13 +8,15 @@ import { selectIsCodeReviewer } from './redux/selectors';
 import { PrivateRoute } from './wrappers';
 
 /////////////////////////////////////////////////////////
+const VITE_WS_PROTOCOL = import.meta.env.VITE_WS_PROTOCOL;
 const VITE_WS_URL =
-  (import.meta.env.VITE_WS_URL && `ws://${import.meta.env.VITE_WS_URL}`) || `ws://${location.hostname}`;
+  (import.meta.env.VITE_WS_URL && `${VITE_WS_PROTOCOL}://${import.meta.env.VITE_WS_URL}`) ||
+  `ws://${location.hostname}`;
 const VITE_WS_PORT = import.meta.env.VITE_WS_PORT || '7078';
 
 const wsUrl = `${VITE_WS_URL}:${VITE_WS_PORT}`;
 console.log('wsUrl', wsUrl);
-console.log({ VITE_WS_URL, VITE_WS_PORT });
+console.log({ VITE_WS_PROTOCOL, VITE_WS_URL, VITE_WS_PORT });
 
 export const socket = new WebSocket(wsUrl);
 
