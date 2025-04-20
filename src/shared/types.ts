@@ -16,3 +16,18 @@ export type TKafkaTopic = {
   topic: string;
   value: string;
 };
+
+export type TUser = {
+  id?: number;
+  name?: string;
+  username?: string;
+  password?: string;
+  authorities?: TRole[];
+};
+
+export type TAuthRequestDto = {
+  username?: string;
+  password?: string;
+  name?: string;
+  authority?: string;
+};

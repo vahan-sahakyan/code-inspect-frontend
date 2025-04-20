@@ -1,0 +1,21 @@
+.login-container {
+  .form-check {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    height: 1rem;
+
+    & * {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    & input {
+      padding: 0;
+    }
+    & label {
+      height: 0.8rem;
+      margin-bottom: 0;
+    }
+  }
+}

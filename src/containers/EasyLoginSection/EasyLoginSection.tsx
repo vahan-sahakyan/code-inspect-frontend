@@ -1,13 +1,13 @@
 import { FormEvent } from 'react';
 import { Container } from 'react-bootstrap';
 
-import { TUser } from '../../pages/Login/Login';
+import { TAuthRequestDto } from '../../shared/types';
 
-export default function EasyLoginSection({
-  sendLoginRequest,
-}: {
-  sendLoginRequest: (e: FormEvent, easyUser?: Pick<TUser, 'password' | 'username'>) => Promise<void>;
-}) {
+interface IEasyLoginSectionProps {
+  sendLoginRequest: (e: FormEvent, easyUser?: TAuthRequestDto) => Promise<void>;
+}
+
+export default function EasyLoginSection({ sendLoginRequest }: IEasyLoginSectionProps): JSX.Element {
   return (
     <Container
       style={{

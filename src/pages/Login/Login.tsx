@@ -1,3 +1,5 @@
+import './Login.scss';
+
 import { AxiosError, AxiosResponse } from 'axios';
 import jwtDecode from 'jwt-decode';
 import { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
@@ -9,17 +11,7 @@ import { EasyLoginSection } from '../../containers';
 import { useLocalState, useMount, useToggle } from '../../hooks';
 import { setUserRole } from '../../redux/user/user.slice';
 import { instance } from '../../services';
-import { TDecodedJwt } from '../../shared/types';
-
-const { Group, Control } = Form;
-
-export type TUser = {
-  id?: number;
-  name?: string;
-  username?: string;
-  password?: string;
-  authorities?: string[];
-};
+import { TAuthRequestDto, TDecodedJwt } from '../../shared/types';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,26 +22,43 @@ const Login = () => {
   const [errorFields, setErrorFields] = useState<Array<string | undefined>>([]);
   const [hasAccount, toggleHasAccount] = useToggle(false);
   const [jwt, setJwt] = useLocalState<string>('', 'jwt');
-  const [, setLoginResponse] = useLocalState<AxiosResponse<TUser> | AxiosError>(
-    {} as AxiosResponse<TUser>,
+  const [isCodeReviewer, setIsCodeReviewer] = useState<boolean>(false);
+
+  const [, setLoginResponse] = useLocalState<AxiosResponse<TAuthRequestDto> | AxiosError>(
+    {} as AxiosResponse<TAuthRequestDto>,
     'loginResponse'
   );
 
   const dispatch = useDispatch();
-  const user: TUser = useMemo(
+  const user: TAuthRequestDto = useMemo(
     () => ({
       username,
       password,
       name: displayName,
+      authority: isCodeReviewer ? 'ROLE_CODE_REVIEWER' : 'ROLE_STUDENT',
     }),
-    [displayName, password, username]
+    [displayName, isCodeReviewer, password, username]
   );
 
   useEffect(() => {
     if (jwt) navigate(`/dashboard`, { replace: true });
   }, [jwt, navigate]);
 
-  async function sendLoginRequest(e: FormEvent, easyUser?: Pick<TUser, 'password' | 'username'>) {
+  /**
+   * Handles the toggle change between student and code reviewer
+   * @param e event
+   */
+  const handleRoleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsCodeReviewer(e.target.checked);
+  };
+
+  /**
+   * Handles the login request
+   * @param e login submit event
+   * @param easyUser optional user object for easy login
+   * @returns
+   */
+  async function sendLoginRequest(e: FormEvent, easyUser?: TAuthRequestDto) {
     e.preventDefault();
     if (!easyUser) {
       setIsValidationPhase(true);
@@ -70,8 +79,13 @@ const Login = () => {
       console.error('🔴 Invalid login attempt!');
     }
   }
-  async function sendSignUpRequest(e: FormEvent) {
+
+  /**
+   * Handles the sign-up request
+   */
+  async function sendSignUpRequest(e: FormEvent): Promise<void> {
     e.preventDefault();
+    console.log({ user });
     setIsValidationPhase(true);
     checkErrors();
     if (jwt) return;
@@ -86,8 +100,11 @@ const Login = () => {
     }
   }
 
+  /**
+   * Checks for errors in the form fields
+   */
   const checkErrors = useCallback(
-    function () {
+    function (): void {
       const fields = ['password', 'username'];
       if (!hasAccount) fields.push('name');
       const items = Object.entries(user)
@@ -100,24 +117,29 @@ const Login = () => {
 
   useMount(checkErrors);
 
-  function handleToggleChange() {
+  /**
+   * Handles the toggle change between login and signup
+   */
+  function handleToggleChange(): void {
     setIsValidationPhase(false);
     toggleHasAccount();
     setUsername('');
     setPassword('');
     setDisplayName('');
+    setIsCodeReviewer(false);
   }
 
   const isRed = (fieldName: string) => errorFields?.includes(fieldName) && isValidationPhase && 'border-danger';
+
   return (
-    <Container style={{ height: '90vh' }} className='d-flex align-items-center justify-content-center'>
+    <Container style={{ height: '90vh' }} className='d-flex align-items-center justify-content-center login-container'>
       <Container style={{ padding: '0', width: '400px' }}>
         <div className='mb-4 d-flex justify-content-between'>
           <h3 className='opacity-100'>#code_inspect</h3>
         </div>
         {!hasAccount && (
-          <Group style={{ transition: '200ms' }} className='my-3 d-flex align-items-center gap-3' controlId='name'>
-            <Control
+          <Form.Group style={{ transition: '200ms' }} className='my-3 d-flex align-items-center gap-3' controlId='name'>
+            <Form.Control
               value={displayName}
               type='text'
               required
@@ -128,10 +150,10 @@ const Login = () => {
               }}
               className={`rounded-0 ${isRed('name')}`}
             />
-          </Group>
+          </Form.Group>
         )}
-        <Group className='my-3 d-flex align-items-center gap-3' controlId='username'>
-          <Control
+        <Form.Group className='my-3 d-flex align-items-center gap-3' controlId='username'>
+          <Form.Control
             value={username}
             type='text'
             required
@@ -142,9 +164,9 @@ const Login = () => {
             }}
             className={`rounded-0 ${isRed('username')}`}
           />
-        </Group>
-        <Group className='my-3 d-flex align-items-center gap-3' controlId='password'>
-          <Control
+        </Form.Group>
+        <Form.Group className='my-3 d-flex align-items-center gap-3' controlId='password'>
+          <Form.Control
             value={password}
             type='password'
             required
@@ -155,8 +177,18 @@ const Login = () => {
             }}
             className={`rounded-0 ${isRed('password')}`}
           />
-        </Group>
-
+        </Form.Group>
+        {!hasAccount && (
+          <Form.Group controlId='role'>
+            <Form.Check
+              onChange={handleRoleChange}
+              type='switch'
+              id='custom-switch'
+              label='code reviewer'
+              checked={isCodeReviewer}
+            />
+          </Form.Group>
+        )}
         <Button
           style={{ width: '400px' }}
           className='my-3 button rounded-0'

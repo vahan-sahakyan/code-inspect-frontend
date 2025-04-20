@@ -11,8 +11,7 @@ import { useMount, useUser } from '../../hooks';
 import useUnMount from '../../hooks/useUnMount';
 import { ApiService } from '../../services';
 import { TAssignmentStatusValues } from '../../services/apiService';
-import { TKafkaTopic } from '../../shared/types';
-import { TUser } from '../Login/Login';
+import { TKafkaTopic, TUser } from '../../shared/types';
 import { styles } from './Dashboard.styles';
 
 export type TAssignment = {
