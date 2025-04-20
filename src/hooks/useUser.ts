@@ -1,8 +1,8 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { useSelector } from 'react-redux';
 
-import { TUser } from '../pages/Login/Login';
 import { selectIsCodeReviewer } from '../redux/selectors';
+import { TUser } from '../shared/types';
 import useLocalState from './useLocalStorage';
 
 const NULL_USER = { displayName: null, role: null, id: undefined, username: undefined };
