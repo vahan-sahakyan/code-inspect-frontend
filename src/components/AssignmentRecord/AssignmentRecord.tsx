@@ -64,5 +64,5 @@ export default function AssignmentRecord({ assignment, claimAssignment }: TAssig
 }
 
 AssignmentRecord.EmptyBadge = function EmptyBadge() {
-  return <em className='empty-badge'>Empty</em>;
+  return <em className='empty-badge'>empty</em>;
 };
